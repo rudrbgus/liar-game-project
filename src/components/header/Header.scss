@@ -1,0 +1,9 @@
+@import url(../../styles/common.scss);
+
+$witdh : 100vw; // 화면에 가로길이
+$height : 100vh; // 화면에 세로길이 
+
+.header{
+    width: $witdh;
+    background: orange;
+}
