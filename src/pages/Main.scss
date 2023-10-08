@@ -1,0 +1,9 @@
+@import url(../styles/common.scss);
+
+.main{
+    background: orange;
+    top: 50%;
+    left: 50%;
+    transform: translate(50%, 50%);
+    font-family: 'Noto Serif KR', serif;
+}
