@@ -4,6 +4,10 @@ import Button from '../components/button/Button';
 import Title from '../components/title/Title';
 
 const Main = () => {
+  const clickButtonHandler123 = () =>{
+    console.log("누름");
+  }
+  
   return (
     <div className='main'>
       <Title title="라이어 게임"/>
