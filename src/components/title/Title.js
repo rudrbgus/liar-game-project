@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import './Title.scss';
 
-const Title = () => {
+const Title = ({title}) => {
   return (
-    <div>Title</div>
+  <div class="glitch-wrapper">
+    <div class="glitch" data-text={title}>{title}</div>
+  </div>
   )
 }
 
-export default Title
+export default Title;
