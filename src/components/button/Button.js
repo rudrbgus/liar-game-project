@@ -1,7 +1,9 @@
 import React from 'react'
 import './Button.scss';
+import Modal from '../modal/Modal';
+import ReactDOM from 'react-dom';
 
-const StartButton = ({title, type}) => {
+const Button = ({title, type}) => {
   let classType = 'button';
   if(type ===1){
     classType = 'button';
@@ -10,10 +12,18 @@ const StartButton = ({title, type}) => {
   }
   
   return (
-    <div className={classType}>
+    <div className={classType} onClick={clickButtonHandler} >
       <span>{title}</span>
     </div>
   )
 }
 
-export default StartButton
+const clickButtonHandler = (event) =>{
+  event.preventDefault();
+  console.log("버튼 클릭");
+  ReactDOM.createPortal(<Modal/>, document.getElementById('overlay-root'));  
+  
+  
+}
+
+export default Button
