@@ -1,8 +1,11 @@
 import React from 'react'
+import './StartButton.scss';
 
-const StartButton = () => {
+const StartButton = ({title}) => {
   return (
-    <div>게임 시작</div>
+    <div className='button'>
+      <span>{title}</span>
+    </div>
   )
 }
 
