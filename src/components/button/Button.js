@@ -24,13 +24,8 @@ const Button = ({title, type}) => {
     </div>
     {
       isOpen && (
-        <div > 
-        <div>
-            <div>
-                123
-            </div>
-        </div>
-    </div>)
+        ReactDOM.createPortal(<RuleModal/>, document.getElementById('overlay-root'))
+      )
     }
     </>
   )

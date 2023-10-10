@@ -5,10 +5,10 @@ import './RuleModal.scss';
 const RuleModal = () => {
     console.log("응애 나 애기 모달");
     return (
-        <div > 
-            <div>
-                <div>
-                    123
+        <div className='modal-frame'> 
+            <div className='__body'>
+                <div className=''>
+                    규칙
                 </div>
             </div>
         </div>
