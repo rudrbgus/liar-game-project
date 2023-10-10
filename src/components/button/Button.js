@@ -16,6 +16,9 @@ const Button = ({title, type}) => {
   const openModalHandler = () =>{
         setIsOpen(!isOpen); 
   }
+  const clickExitHandler = () =>{
+        setIsOpen(!isOpen);
+  }
 
   return (
     <>
@@ -23,9 +26,9 @@ const Button = ({title, type}) => {
       <span>{title}</span>
     </div>
     {
-      isOpen && (
-        ReactDOM.createPortal(<RuleModal/>, document.getElementById('overlay-root'))
-      )
+        isOpen && type ===2 && (
+          ReactDOM.createPortal(<RuleModal click={clickExitHandler}/>, document.getElementById('overlay-root'))
+        )      
     }
     </>
   )
