@@ -7,8 +7,17 @@ const RuleModal = () => {
     return (
         <div className='modal-frame'> 
             <div className='__body'>
-                <div className=''>
-                    규칙
+                <div className='__content'>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    <span>게임 설명</span>
+                    
                 </div>
             </div>
         </div>

@@ -1,15 +1,26 @@
 @use "../../styles/common.scss" as common;
 
 .modal-frame{
-    position: fixed; // 절대 위치로 바꾸고
+    font-family: common.$googleFont;
+    position: absolute; // 절대 위치로 바꾸고
+    top: 0;
+    left: 0;
     display: flex; // flex 형태로 바꾸고
     width: 100%;
-    height: 100%;
-    //transform: translate(-50%, -50%); // 중앙배치
+    height: 100%;    
     text-align: center; // 글씨도 중앙배치
     z-index: 10;
     background: rgba($color: #000000, $alpha: 0.8);
     & .__body{
-
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40%;
+        height: 80%;
+        background: whitesmoke;        
+        & .__content{
+            font-size: 2rem;
+        }
     }
 }
