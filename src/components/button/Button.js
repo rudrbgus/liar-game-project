@@ -1,19 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Button.scss';
+import ReactDOM from 'react-dom';
+import RuleModal from '../modal/RuleModal';
 
-const StartButton = ({title, type}) => {
-  let classType = 'button';
+const Button = ({title, type}) => {
+  let classType = '';
   if(type ===1){
     classType = 'button';
   }else if(type ===2){
-    classType = 'button2';      
+    classType = 'button2';
   }
   
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModalHandler = () =>{
+        setIsOpen(!isOpen); 
+  }
+  const clickExitHandler = () =>{
+        setIsOpen(!isOpen);
+  }
+
   return (
-    <div className={classType}>
+    <>
+    <div className={classType} onClick={openModalHandler} >
       <span>{title}</span>
     </div>
+    {
+        isOpen && type ===2 && (
+          ReactDOM.createPortal(<RuleModal click={clickExitHandler}/>, document.getElementById('overlay-root'))
+        )      
+    }
+    </>
   )
 }
 
-export default StartButton
+
+
+export default Button
