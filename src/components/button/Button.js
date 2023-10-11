@@ -3,19 +3,16 @@ import './Button.scss';
 import ReactDOM from 'react-dom';
 import RuleModal from '../modal/RuleModal';
 
-const Button = ({title, type, event}) => {  
-  let classType = '';
-  if(type ===1){
-    classType = 'button';
-  }else if(type ===2){
-    classType = 'button2';
-  }
-  
+const Button = ({title, style, event}) => {  
+  const classStyle = style;
+  console.log(classStyle);
+    
   const [isOpen, setIsOpen] = useState(false);
 
   const openModalHandler = () =>{
-    if(type === 2)
+    if(classStyle === "button2"){        
         setIsOpen(!isOpen); 
+    }
     else
         event();
   }
@@ -25,11 +22,11 @@ const Button = ({title, type, event}) => {
 
   return (
     <>
-    <div className={classType} onClick={openModalHandler} >
+    <div className={classStyle} onClick={openModalHandler} >
       <span>{title}</span>
     </div> 
     {
-        isOpen && type ===2 && (
+        isOpen && classStyle === "button2" && (
           ReactDOM.createPortal(<RuleModal click={clickExitHandler}/>, document.getElementById('overlay-root'))
         )      
     }    

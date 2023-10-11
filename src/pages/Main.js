@@ -14,8 +14,8 @@ const Main = () => {
     return (
       <div className='main'>
         <Title title="라이어 게임"/>
-        <Button title="게임 시작" type ={1} event = {clickStartButtonHandler}/>
-        <Button title="게임 방법" type ={2}/>      
+        <Button title="게임 시작" style ="button1" event = {clickStartButtonHandler}/>
+        <Button title="게임 방법" style ="button2"/>      
       </div>
     )
   }
@@ -23,8 +23,8 @@ const Main = () => {
     return(
       <div className='main'>
         <Title title="라이어 게임"/>
-        <Button title="방 만들기" type ={1} event = {clickStartButtonHandler}/>
-        <Button title='방 찾기 ' type ={2}/>        
+        <Button title="방 만들기" style="button3"/>
+        <Button title='방 찾기 ' style="button4"/>        
       </div>
     )
     }
