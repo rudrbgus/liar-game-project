@@ -6,9 +6,8 @@ const RuleModal = ({click}) => {
     const [Animation, setAnimation] = useState("__body mount");
     const clickModalFrameHandler = (event) =>{
         console.log(event.target.className);
-        if(event.target.className === 'modal-frame'){
-            setAnimation("__body unmount");
-            setTimeout(click(), 2000);            
+        if(event.target.className === 'modal-frame'){            
+            click();
         }
         
     }    
