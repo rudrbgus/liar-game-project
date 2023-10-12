@@ -8,8 +8,7 @@ const RuleModal = ({click}) => {
         console.log(event.target.className);
         if(event.target.className === 'modal-frame'){            
             click();
-        }
-        
+        }        
     }    
     return (
         <div className='modal-frame' onClick={clickModalFrameHandler}> 

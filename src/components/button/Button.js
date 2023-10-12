@@ -8,13 +8,7 @@ const Button = ({title, style, event}) => {
     
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModalHandler = () =>{
-    if(classStyle === "button2"){        
-        setIsOpen(!isOpen);        
-    }
-    else
-        event();
-  }
+  
   const clickExitHandler = () =>{
         setIsOpen(!isOpen);
   }

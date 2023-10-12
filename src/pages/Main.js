@@ -4,6 +4,8 @@ import Button from '../components/button/Button';
 import Title from '../components/title/Title';
 import RuleModal from '../components/modal/RuleModal';
 import  ReactDOM  from 'react-dom';
+import MakeRoom from '../components/modal/MakeRoom';
+import FindModal from '../components/modal/FindModal';
 
 const Main = () => {
   const [start, setStart] = useState(false);
@@ -48,7 +50,16 @@ const Main = () => {
         <Title title="라이어 게임"/>
         <Button title="방 만들기" style="button3" event = {clickMakeRoomButtonHandler}/>
         <Button title='방 찾기 ' style="button4" event = {clickFindRoomButtonHandler}/>
-          
+        {
+          make && (
+            ReactDOM.createPortal(<MakeRoom click={clickMakeRoomButtonHandler}/>, document.getElementById('overlay-root'))
+          )
+        }
+        {
+          find && (
+            ReactDOM.createPortal(<FindModal click={clickFindRoomButtonHandler}/>, document.getElementById('overlay-root'))
+          )
+        }     
       </div>
     )
     }
