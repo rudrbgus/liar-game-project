@@ -7,7 +7,7 @@ import  ReactDOM  from 'react-dom';
 import MakeRoom from '../components/modal/MakeRoom';
 import FindModal from '../components/modal/FindModal';
 
-const Main = () => {
+const Main = ({change}) => {
   const [start, setStart] = useState(false);
   const [make, setMake] = useState(false);
   const [find, setFind] = useState(false);
@@ -57,7 +57,7 @@ const Main = () => {
         }
         {
           find && (
-            ReactDOM.createPortal(<FindModal click={clickFindRoomButtonHandler}/>, document.getElementById('overlay-root'))
+            ReactDOM.createPortal(<FindModal click={clickFindRoomButtonHandler} change={change}/>, document.getElementById('overlay-root'))
           )
         }     
       </div>
