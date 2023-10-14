@@ -37,6 +37,10 @@
             flex-direction: row;
             justify-content: space-evenly;
             margin-bottom: 10rem;
+            & .wrapper{
+                height: inherit;
+                justify-content: center;
+            }
         }
         & .createButton{
             font-size: 3rem;
