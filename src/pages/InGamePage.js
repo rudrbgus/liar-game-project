@@ -12,7 +12,10 @@ const InGamePage = () => {
         <UserBox/>
       </div>
       <div className='chat-part'>
-        채팅파트
+        <span className='__room-code'>방 코드</span>
+        <span className='__present-state'>게임 시작을 해주세요!</span>
+        <div className='__start-game'>박스</div>
+        <div className='__chat-box'>채팅 하는 박스</div>
       </div>
       <div className='user-box-right-part'>
         <UserBox/>

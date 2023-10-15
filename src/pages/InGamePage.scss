@@ -15,9 +15,13 @@
         height: 100%;    
         outline: none;
         border: 1px solid #000;
-        & .box:hover{
-            transition: all .5s ease-in-out;            
-            transform: translate(5%, 0);                        
+        & .box{            
+            padding-left: 5%;
+            transform: translate(-5%, 0);
+        }
+        & .box:hover{            
+            transition: all .5s ease-in-out;                   
+            transform: translate(0, 0);                        
         }
     }    
     & .user-box-right-part{
@@ -29,13 +33,41 @@
         height: 100%;    
         outline: none;
         border: 1px solid #000;
+        & .box{
+            transform: translate(5%, 0);
+        }
+        & .box:hover{
+            transition: all .5s ease-in-out;            
+            transform: translate(0%, 0);
+
+        }
     }
     & .chat-part{
         display: flex;
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
         width: 40%;
         height: 100%;           
         border: 1px solid #000;
         outline: none;
+        & .__room-code{
+            width: 100%;
+            height: 10%;
+        }
+        & .__present-state{
+            width: 100%;
+            height: 5%;
+        }
+        & .__start-game{
+            width: 100%;
+            height: 5%;
+        }
+        & .__chat-box{
+            width: 100%;
+            height: 80%;
+            background: orange;
+        }
     }
 }
 

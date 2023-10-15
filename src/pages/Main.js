@@ -52,7 +52,7 @@ const Main = ({change}) => {
         <Button title='방 찾기 ' style="button4" event = {clickFindRoomButtonHandler}/>
         {
           make && (
-            ReactDOM.createPortal(<MakeRoom click={clickMakeRoomButtonHandler}/>, document.getElementById('overlay-root'))
+            ReactDOM.createPortal(<MakeRoom click={clickMakeRoomButtonHandler} change={change}/>, document.getElementById('overlay-root'))
           )
         }
         {

@@ -3,7 +3,7 @@ import "./MakeRoom.scss";
 import RadioButton from '../button/RadioButton';
 import Button from '../button/Button';
 
-const MakeRoom = ({click}) => {
+const MakeRoom = ({click, change}) => {
     const clickModalFrameHandler = (event) =>{        
         if(event.target.className === 'modal-frame'){            
             click();
@@ -24,7 +24,10 @@ const MakeRoom = ({click}) => {
                         <RadioButton disabled={false} children="규칙1" onClickEvent = {clickRadioButtonHandler} checked={!clicked}/>                            
                         <RadioButton disabled={false} children="규칙2" onClickEvent = {clickRadioButtonHandler} checked={clicked}/>                            
                     </div>
-                    <Button title="방 만들기" style="button5" event={()=>{click()}} />
+                    <Button title="방 만들기" style="button5" event={()=>{
+                        click()
+                        change(2)
+                    }} />
                 </div>            
         </div>
   )
