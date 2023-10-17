@@ -1,0 +1,14 @@
+.chat-box{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    & .__user-name{
+        width: 20%;
+        background: blue;
+    }
+    & .__user-context{
+        width: 80%;
+        background: blueviolet;
+    }
+}

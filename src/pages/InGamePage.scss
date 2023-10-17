@@ -12,7 +12,7 @@
         flex-direction: column; 
         justify-content: space-evenly;
         width: 30%;
-        height: 100%;    
+        height: 100vh;    
         outline: none;
         border: 1px solid #000;
         & .box{            
@@ -39,7 +39,6 @@
         & .box:hover{
             transition: all .5s ease-in-out;            
             transform: translate(0%, 0);
-
         }
     }
     & .chat-part{
@@ -54,19 +53,46 @@
         & .__room-code{
             width: 100%;
             height: 10%;
+            display: flex;
+            flex-direction: column;
+            & .__room-text{
+                height: 20%;
+            }
+            & .__code-text{
+                display: flex;
+                height: 80%;
+                font-size: 2rem;
+                align-items: center;
+                justify-content: center;
+                background: greenyellow;
+            }
         }
         & .__present-state{
             width: 100%;
             height: 5%;
+            background: yellow;
         }
         & .__start-game{
             width: 100%;
             height: 5%;
+            background: red;
         }
         & .__chat-box{
             width: 100%;
-            height: 80%;
+            height: 79%;
             background: orange;
+            & .__chatiing-box{
+                background:aquamarine;
+                width: 100%;
+                height: 90%;
+            }
+            & .__chat-input{
+                width: 100%;
+                height: 10%;
+                outline: none;                                
+                background: magenta;
+                text-align: center;
+            }
         }
     }
 }
