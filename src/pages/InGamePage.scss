@@ -50,23 +50,7 @@
         height: 100%;           
         border: 1px solid #000;
         outline: none;
-        & .__room-code{
-            width: 100%;
-            height: 10%;
-            display: flex;
-            flex-direction: column;
-            & .__room-text{
-                height: 20%;
-            }
-            & .__code-text{
-                display: flex;
-                height: 80%;
-                font-size: 2rem;
-                align-items: center;
-                justify-content: center;
-                background: greenyellow;
-            }
-        }
+        
         & .__present-state{
             width: 100%;
             height: 5%;
