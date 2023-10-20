@@ -1,10 +1,15 @@
 import React from 'react';
 import "./UserBox.scss";
 
-const UserBox = () => {
+const UserBox = ({userName, show}) => {  
+  let boxClassName = "box";
+  if(!show){
+    boxClassName = "box none";
+  }
   return (
-    <div className='box'>
-        <span>1번 참가자</span>
+    <div className={boxClassName}>
+        <div className='__img-box'></div>
+        <div className='__user-name'>{userName}</div>
     </div>
   )
 }

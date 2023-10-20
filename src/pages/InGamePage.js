@@ -11,17 +11,17 @@ const InGamePage = () => {
     if(event.key === 'Enter'){
       console.log("123");
       setUserText(event.target.value);
-      setChatArray(<ChatBox userName="김만덕" userContext={event.target.value}/>);
+      setChatArray(...chatArray, <ChatBox userName="김만덕" userContext={event.target.value}/>);
     }    
   }
     
   return (
     <div className='wrapper'>
       <div className='user-box-left-part'>
-        <UserBox/>
-        <UserBox/>
-        <UserBox/>
-        <UserBox/>
+        <UserBox userName="김만덕" show={true}/>
+        <UserBox show={false}/>
+        <UserBox show={false}/>
+        <UserBox show={false}/>
       </div>
       <div className='chat-part'>
         <RoomCodeButton/>      
@@ -37,13 +37,13 @@ const InGamePage = () => {
         </div>
       </div>
       <div className='user-box-right-part'>
-        <UserBox/>
-        <UserBox/>
-        <UserBox/>
-        <UserBox/>
+        <UserBox userName="김만덕" show={false}/>
+        <UserBox show={false}/>
+        <UserBox show={false}/>
+        <UserBox show={false}/>        
       </div>
     </div>
   )
 }
 
-export default InGamePage;  
+export default InGamePage;
