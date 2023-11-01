@@ -7,6 +7,7 @@ import RoomCodeButton from '../components/button/RoomCodeButton';
 const InGamePage = () => {
   const [userText, setUserText] = useState("");
   const [chatArray, setChatArray] = useState([]);
+  // 유저 입력 받아서 배열에 넣기
   const enterUserText = (event) =>{
     if(event.key === 'Enter'){
       console.log("123");
@@ -17,12 +18,14 @@ const InGamePage = () => {
     
   return (
     <div className='wrapper'>
+      {/* 왼쪽 화면 */}
       <div className='user-box-left-part'>
         <UserBox userName="김만덕" show={true}/>
         <UserBox show={false}/>
         <UserBox show={false}/>
         <UserBox show={false}/>
       </div>
+      {/* 중앙 화면 */}
       <div className='chat-part'>
         <RoomCodeButton/>      
         <span className='__present-state'>게임 시작을 해주세요!</span>
@@ -36,6 +39,7 @@ const InGamePage = () => {
           <input className='__chat-input' onKeyDown={enterUserText}/>
         </div>
       </div>
+      {/* 오른쪽 화면 */}
       <div className='user-box-right-part'>
         <UserBox userName="김만덕" show={false}/>
         <UserBox show={false}/>
