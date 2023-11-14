@@ -2,17 +2,40 @@ import React, { useState } from 'react';
 import "./MakeRoom.scss";
 import RadioButton from '../button/RadioButton';
 import Button from '../button/Button';
+import axios from 'axios';
 
-const MakeRoom = ({click, change}) => {
+const MakeRoom = ({click, change, getUserName}) => {
+    // 모달 밖의 누르면
     const clickModalFrameHandler = (event) =>{        
         if(event.target.className === 'modal-frame'){            
             click();
         }        
     }
+    // 규칙 1 , 2 클릭하는거
     const [clicked , setClicked] = useState(false);
     const clickRadioButtonHandler = () =>{
         setClicked(!clicked);
     } 
+    const postUserInfo = () =>{
+        const temporaryIdentifier = generateTemporaryIdentifier();
+
+        // 서버로 임시 식별자를 POST 요청으로 전송합니다.
+        axios.post('http://localhost:8181/sendData', { temporaryIdentifier })
+            .then(response => {
+                console.log(response.data);
+                getUserName(response.data);
+            })
+            .catch(error => {
+                console.error('Error sending data: ', error);
+            });
+            
+    }
+
+    // 임시 식별자를 생성하는 함수
+    const generateTemporaryIdentifier = () => {
+        return Math.random().toString(36).substring(7);
+    };
+
 
   return (
     <div className='modal-frame' onClick={clickModalFrameHandler}> 
@@ -25,6 +48,7 @@ const MakeRoom = ({click, change}) => {
                         <RadioButton disabled={false} children="규칙2" onClickEvent = {clickRadioButtonHandler} checked={clicked}/>                            
                     </div>
                     <Button title="방 만들기" style="button5" event={()=>{
+                        postUserInfo()
                         click()
                         change(2)
                     }} />

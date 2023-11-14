@@ -6,6 +6,7 @@ import axios from 'axios';
 
 
 function App() {
+  const [userName, setUserName] = useState("무명");
   const [msg, setMsg] = useState([]);
   useEffect(()=>{
     axios.get('http://localhost:8181/hello')
@@ -17,20 +18,26 @@ function App() {
       setScreenNumber(change);
   }
 
+  // 이름 가져오는 함수
+  const getUserName = (serverFromuserName) =>{
+    setUserName(serverFromuserName);
+  }
+  
+
   
   if(screenNumber === 1)
   {
     return (
       <>
         <div className="App">
-          <Main change ={screenNumberToggleHandler}/>
+          <Main change ={screenNumberToggleHandler} getUserName={getUserName}/>
         </div>        
       </>
     );
   }else if(screenNumber === 2){
     return(
       <>
-        <InGamePage/>
+        <InGamePage name={userName}/>
       </>
     )
     }

@@ -5,11 +5,7 @@ import ChatBox from '../components/box/ChatBox';
 import RoomCodeButton from '../components/button/RoomCodeButton';
 import axios from 'axios';
 
-const InGamePage = () => {
-  useEffect(()=>{
-    axios.get("http://localhost:8181/create-room")
-      .then(res => res)
-  });
+const InGamePage = ({name}) => {
 
   const [userText, setUserText] = useState("");
   const [chatArray, setChatArray] = useState([]);
@@ -18,7 +14,7 @@ const InGamePage = () => {
     if(event.key === 'Enter'){
       console.log("123");
       setUserText(event.target.value);
-      setChatArray(...chatArray, <ChatBox userName="김만덕" userContext={event.target.value}/>);
+      setChatArray(...chatArray, <ChatBox userName={name} userContext={event.target.value}/>);
     }    
   }
     
@@ -26,7 +22,7 @@ const InGamePage = () => {
     <div className='wrapper'>
       {/* 왼쪽 화면 */}
       <div className='user-box-left-part'>
-        <UserBox userName="김만덕" show={true}/>
+        <UserBox userName={name} show={true}/>
         <UserBox show={false}/>
         <UserBox show={false}/>
         <UserBox show={false}/>
