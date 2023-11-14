@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./InGamePage.scss";
 import UserBox from '../components/box/UserBox';
 import ChatBox from '../components/box/ChatBox';
 import RoomCodeButton from '../components/button/RoomCodeButton';
+import axios from 'axios';
 
 const InGamePage = () => {
+  useEffect(()=>{
+    axios.get("http://localhost:8181/create-room")
+      .then(res => res)
+  });
+
   const [userText, setUserText] = useState("");
   const [chatArray, setChatArray] = useState([]);
   // 유저 입력 받아서 배열에 넣기

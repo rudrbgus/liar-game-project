@@ -6,13 +6,12 @@ import axios from 'axios';
 
 
 function App() {
-  const [hello, setHello] = useState('')
+  const [msg, setMsg] = useState([]);
+  useEffect(()=>{
+    axios.get('http://localhost:8181/hello')
+      .then(res => setMsg(res.data))
+  }); 
 
-    useEffect(() => {
-        axios.get('/api/hello')
-        .then(response => setHello(response.data))
-        .catch(error => console.log(error))
-    }, []);
   const [screenNumber, setScreenNumber] = useState(1);  
   const screenNumberToggleHandler = (change) =>{
       setScreenNumber(change);
@@ -23,17 +22,15 @@ function App() {
   {
     return (
       <>
-      <div className="App">
-        <Main change ={screenNumberToggleHandler}/>
-      </div>
-      <div>{hello}</div>
+        <div className="App">
+          <Main change ={screenNumberToggleHandler}/>
+        </div>        
       </>
     );
   }else if(screenNumber === 2){
     return(
       <>
-      <InGamePage/>
-      <div>{hello}</div>
+        <InGamePage/>
       </>
     )
     }
