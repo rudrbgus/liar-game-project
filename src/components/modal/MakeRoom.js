@@ -16,11 +16,22 @@ const MakeRoom = ({click, change, getUserName}) => {
     const clickRadioButtonHandler = () =>{
         setClicked(!clicked);
     } 
+    // 임의의 방 코드를 만드는 함수
+    const generateRandomRoomCode = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < 4; i++) {
+          result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    };
+
     const postUserInfo = () =>{
         const temporaryIdentifier = generateTemporaryIdentifier();
+        const randomRoomCode =  generateRandomRoomCode();
 
         // 서버로 임시 식별자를 POST 요청으로 전송합니다.
-        axios.post('http://localhost:8181/sendData', { temporaryIdentifier })
+        axios.post('http://localhost:8181/sendData', {temporaryIdentifier, randomRoomCode})
             .then(response => {
                 console.log(response.data);
                 getUserName(response.data);
@@ -28,16 +39,16 @@ const MakeRoom = ({click, change, getUserName}) => {
             .catch(error => {
                 console.error('Error sending data: ', error);
             });
-            
     }
 
     // 임시 식별자를 생성하는 함수
     const generateTemporaryIdentifier = () => {
         return Math.random().toString(36).substring(7);
     };
+    
 
 
-  return (
+return (
     <div className='modal-frame' onClick={clickModalFrameHandler}> 
             <div className='__body mount'>                                    
                     <span className='title'>방 만들기</span>
