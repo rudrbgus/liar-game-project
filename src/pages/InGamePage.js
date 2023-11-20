@@ -5,18 +5,24 @@ import ChatBox from '../components/box/ChatBox';
 import RoomCodeButton from '../components/button/RoomCodeButton';
 import axios from 'axios';
 
-const InGamePage = ({name}) => {
+// 처음 방 만들고 사용자이름 입력 받는거임
+const InGamePage = ({name, roomCode}) => {
 
   const [userText, setUserText] = useState("");
   const [chatArray, setChatArray] = useState([]);
-  // 유저 입력 받아서 배열에 넣기
-  const enterUserText = (event) =>{
-    if(event.key === 'Enter'){
-      console.log("123");
-      setUserText(event.target.value);
-      setChatArray(...chatArray, <ChatBox userName={name} userContext={event.target.value}/>);
-    }    
-  }
+
+  const enterUserText = (event) => {
+    if (event.key === 'Enter') {
+      const newChat = {
+        userName: name,
+        userContext: event.target.value
+      };
+      // 기존 채팅 배열에 새로운 채팅 추가
+      setChatArray([...chatArray, newChat]);
+      // 입력 창 초기화
+      setUserText("");
+    }
+  };
     
   return (
     <div className='wrapper'>
@@ -29,18 +35,27 @@ const InGamePage = ({name}) => {
       </div>
       {/* 중앙 화면 */}
       <div className='chat-part'>
-        <RoomCodeButton/>      
+        <RoomCodeButton roomCode={roomCode} />
         <span className='__present-state'>게임 시작을 해주세요!</span>
-        {/* <div className='__start-game'>박스</div> */}
         <div className='__chat-box'>
           <div className='__chatiing-box'>
-            {
-              chatArray
-            }            
+            {/* 채팅 내용을 매핑하여 출력 */}
+            {chatArray.map((chat, index) => (
+              <div key={index} className='__chat-item'>
+                  <span className='__chat-user'>{chat.userName}:</span>
+                  <span className='__chat-text'>{chat.userContext}</span>
+              </div>
+              ))
+            }
           </div>
-          <input className='__chat-input' onKeyDown={enterUserText}/>
+          <input
+            className='__chat-input'
+            value={userText}
+            onChange={(event) => setUserText(event.target.value)}
+            onKeyDown={enterUserText}
+          />
+          </div>
         </div>
-      </div>
       {/* 오른쪽 화면 */}
       <div className='user-box-right-part'>
         <UserBox userName="김만덕" show={false}/>

@@ -4,7 +4,7 @@ import RadioButton from '../button/RadioButton';
 import Button from '../button/Button';
 import axios from 'axios';
 
-const MakeRoom = ({click, change, getUserName}) => {
+const MakeRoom = ({click, change, getUserName, getRoomCode}) => {
     // 모달 밖의 누르면
     const clickModalFrameHandler = (event) =>{        
         if(event.target.className === 'modal-frame'){            
@@ -25,13 +25,12 @@ const MakeRoom = ({click, change, getUserName}) => {
         }
         return result;
     };
-
     const postUserInfo = () =>{
         const temporaryIdentifier = generateTemporaryIdentifier();
         const randomRoomCode =  generateRandomRoomCode();
-
+        getRoomCode(randomRoomCode);
         // 서버로 임시 식별자를 POST 요청으로 전송합니다.
-        axios.post('http://localhost:8181/sendData', {temporaryIdentifier, randomRoomCode})
+        axios.post('http://localhost:8181/create-room', {temporaryIdentifier, randomRoomCode})
             .then(response => {
                 console.log(response.data);
                 getUserName(response.data);
@@ -40,13 +39,11 @@ const MakeRoom = ({click, change, getUserName}) => {
                 console.error('Error sending data: ', error);
             });
     }
-
     // 임시 식별자를 생성하는 함수
     const generateTemporaryIdentifier = () => {
         return Math.random().toString(36).substring(7);
     };
     
-
 
 return (
     <div className='modal-frame' onClick={clickModalFrameHandler}> 
