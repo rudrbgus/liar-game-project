@@ -29,15 +29,9 @@ const MakeRoom = ({click, change, getUserName, getRoomCode}) => {
         const temporaryIdentifier = generateTemporaryIdentifier();
         const randomRoomCode =  generateRandomRoomCode();
         getRoomCode(randomRoomCode);
-        // 서버로 임시 식별자를 POST 요청으로 전송합니다.
-        axios.post('http://localhost:8181/create-room', {temporaryIdentifier, randomRoomCode})
-            .then(response => {
-                console.log(response.data);
-                getUserName(response.data);
-            })
-            .catch(error => {
-                console.error('Error sending data: ', error);
-            });
+        // 서버로 임시 식별자를 POST요청으로 전송합니다.
+        axios.post('http://localhost:8181/create-room', {temporaryIdentifier, randomRoomCode});
+            
     }
     // 임시 식별자를 생성하는 함수
     const generateTemporaryIdentifier = () => {

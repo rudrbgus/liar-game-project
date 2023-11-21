@@ -6,25 +6,22 @@ import axios from 'axios';
 
 
 function App() {
-  const [userName, setUserName] = useState("무명");
-  const [roomCode, setRoomCode] = useState("방 코드");
+  
   const [msg, setMsg] = useState([]);
-  useEffect(()=>{
+  useEffect(()=>{ // 페이지가 열리면 하는 행동
     axios.get('http://localhost:8181/hello')
       .then(res => setMsg(res.data))
   }); 
 
-  const [screenNumber, setScreenNumber] = useState(1);  
+  const [screenNumber, setScreenNumber] = useState(1);  // 스크린 넘버 1이면 메인화면 2면 게임화면
   const screenNumberToggleHandler = (change) =>{
       setScreenNumber(change);
   }
-
-  // 이름 가져오는 함수
-  const getUserName = (serverFromuserName) =>{
-    setUserName(serverFromuserName);
-  }
+  
+  
+  const [roomCode, setRoomCode] = useState("방 코드");
   // 방 코드 가져오는 함수
-  const getRoomCode = (roomCode) => {
+  const getRoomCode = (roomCode) => { // 모달에서 방 코드 가져오는 함수
     setRoomCode(roomCode);
   }
   
@@ -35,14 +32,14 @@ function App() {
     return (
       <>
         <div className="App">
-          <Main change ={screenNumberToggleHandler} getUserName={getUserName} getRoomCode={getRoomCode}/>
+          <Main change ={screenNumberToggleHandler}  getRoomCode={getRoomCode}/>
         </div>        
       </>
     );
   }else if(screenNumber === 2){
     return(
       <>
-        <InGamePage name={userName} roomCode={roomCode}/>
+        <InGamePage roomCode={roomCode}/>
       </>
     )
     }
