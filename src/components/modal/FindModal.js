@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./FindModal.scss";
 import Button from '../button/Button';
 import axios from 'axios';
 
 const FindModal = ({click, change}) => {
+    const [inputRoomCode, setInputRoomCode] = useState("");
+
     const clickModalFrameHandler = (event) =>{        
         if(event.target.className === 'find-modal-frame'){            
             click();
         }        
     }
+
+    // input 값이 변경될 때마다 호출되는 함수
+    const handleInputChange = (event) => {
+    // 입력 값이 변경될 때마다 상태를 업데이트
+        setInputRoomCode(event.target.value);
+    };
     const clickCheckButtonHandler = () =>{
         postUserInfo();
         click();
@@ -28,8 +36,7 @@ const FindModal = ({click, change}) => {
             <div className='__title'>
                 방 코드
             </div>
-            <input className='__input' type='input' value={inputRoomCode}>
-                
+            <input className='__input' type='input' onChange={handleInputChange}>
             </input>
             <Button title="확인" style="button6" event={clickCheckButtonHandler}/>
         </div>
