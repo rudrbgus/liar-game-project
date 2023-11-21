@@ -24,7 +24,7 @@ const FindModal = ({click, change}) => {
     }
     const postUserInfo = () =>{
         const temporaryIdentifier = generateTemporaryIdentifier();
-        axios.post("http://localhost:8181/find-room-code", {inputRoomCode, temporaryIdentifier});
+        axios.post("http://localhost:8181/compare-room-code", {inputRoomCode});
     }
     // 임시 식별자를 생성하는 함수
     const generateTemporaryIdentifier = () => {

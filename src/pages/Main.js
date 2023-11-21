@@ -7,7 +7,7 @@ import  ReactDOM  from 'react-dom';
 import MakeRoom from '../components/modal/MakeRoom';
 import FindModal from '../components/modal/FindModal';
 
-const Main = ({change, getUserName, getRoomCode}) => {
+const Main = ({change, codeAndId}) => {
   const [start, setStart] = useState(false);
   const [make, setMake] = useState(false);
   const [find, setFind] = useState(false);
@@ -52,7 +52,7 @@ const Main = ({change, getUserName, getRoomCode}) => {
         <Button title='방 찾기 ' style="button4" event = {clickFindRoomButtonHandler}/>
         {
           make && (
-            ReactDOM.createPortal(<MakeRoom click={clickMakeRoomButtonHandler} change={change} getUserName={getUserName} getRoomCode={getRoomCode}/>, document.getElementById('overlay-root'))
+            ReactDOM.createPortal(<MakeRoom click={clickMakeRoomButtonHandler} change={change} codeAndId={codeAndId}/>, document.getElementById('overlay-root'))
           )
         }
         {

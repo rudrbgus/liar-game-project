@@ -8,6 +8,7 @@ import axios from 'axios';
 function App() {
   
   const [msg, setMsg] = useState([]);
+  
   useEffect(()=>{ // 페이지가 열리면 하는 행동
     axios.get('http://localhost:8181/hello')
       .then(res => setMsg(res.data))
@@ -19,11 +20,7 @@ function App() {
   }
   
   
-  const [roomCode, setRoomCode] = useState("방 코드");
-  // 방 코드 가져오는 함수
-  const getRoomCode = (roomCode) => { // 모달에서 방 코드 가져오는 함수
-    setRoomCode(roomCode);
-  }
+  
   
 
   
@@ -32,14 +29,14 @@ function App() {
     return (
       <>
         <div className="App">
-          <Main change ={screenNumberToggleHandler}  getRoomCode={getRoomCode}/>
+          <Main change ={screenNumberToggleHandler}  />
         </div>        
       </>
     );
   }else if(screenNumber === 2){
     return(
       <>
-        <InGamePage roomCode={roomCode}/>
+        <InGamePage/>
       </>
     )
     }

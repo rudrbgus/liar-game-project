@@ -4,7 +4,7 @@ import RadioButton from '../button/RadioButton';
 import Button from '../button/Button';
 import axios from 'axios';
 
-const MakeRoom = ({click, change, getUserName, getRoomCode}) => {
+const MakeRoom = ({click, change, codeAndId}) => {
     // 모달 밖의 누르면
     const clickModalFrameHandler = (event) =>{        
         if(event.target.className === 'modal-frame'){            
@@ -16,27 +16,11 @@ const MakeRoom = ({click, change, getUserName, getRoomCode}) => {
     const clickRadioButtonHandler = () =>{
         setClicked(!clicked);
     } 
-    // 임의의 방 코드를 만드는 함수
-    const generateRandomRoomCode = () => {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        for (let i = 0; i < 4; i++) {
-          result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
-    };
     const postUserInfo = () =>{
-        const temporaryIdentifier = generateTemporaryIdentifier();
-        const randomRoomCode =  generateRandomRoomCode();
-        getRoomCode(randomRoomCode);
-        // 서버로 임시 식별자를 POST요청으로 전송합니다.
-        axios.post('http://localhost:8181/create-room', {temporaryIdentifier, randomRoomCode});
-            
+        axios.post("http://localhost:8181/create-room");
     }
-    // 임시 식별자를 생성하는 함수
-    const generateTemporaryIdentifier = () => {
-        return Math.random().toString(36).substring(7);
-    };
+    
+    
     
 
 return (
@@ -50,7 +34,7 @@ return (
                         <RadioButton disabled={false} children="규칙2" onClickEvent = {clickRadioButtonHandler} checked={clicked}/>                            
                     </div>
                     <Button title="방 만들기" style="button5" event={()=>{
-                        postUserInfo()
+                        postUserInfo();
                         click()
                         change(2)
                     }} />
