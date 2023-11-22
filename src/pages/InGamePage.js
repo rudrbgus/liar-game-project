@@ -8,11 +8,12 @@ import cookie from 'react-cookies';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
-  const [userText, setUserText] = useState(""); // 유저 이름
-  const [chatArray, setChatArray] = useState([]); // 유저 채팅
-  const[userNameList, setUserNameList] = useState([]);
+  const [userText, setUserText] = useState(""); // 유저 채팅
+  const [chatArray, setChatArray] = useState([]); // 유저 채팅 배열
+  const[userNameList, setUserNameList] = useState([]);  
   
   
+  // 유저 이름 가져오는 effect
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,8 +36,8 @@ const InGamePage = () => {
     };
     // 초기에 데이터 가져오기
     fetchData();
-    // 3초마다 데이터를 가져오는 간격 설정
-    const intervalId = setInterval(fetchData, 3000);
+    // 1초마다 데이터를 가져오는 간격 설정
+    const intervalId = setInterval(fetchData, 1000);
     // beforeunload 이벤트 리스너 설정
     window.addEventListener('beforeunload', handleBeforeUnload);
     // 클린업 함수
@@ -50,7 +51,7 @@ const InGamePage = () => {
   }, []);
 
   // 쿠키에서 특정 키의 값을 가져오는 함수
-const getCookieValue = (key) => {
+  const getCookieValue = (key) => {
   const cookiePairs = document.cookie.split("; ");
   for (let i = 0; i < cookiePairs.length; i++) {
     const pair = cookiePairs[i].split("=");
@@ -59,19 +60,49 @@ const getCookieValue = (key) => {
     }
   }
   return null;
-};
+  };
+
+  // 방 코드 서버에서 불러오기
+  const [isLoading, setIsLoading] = useState(true);
+  const [roomCode, setRoomCode] = useState("1234");
+  useEffect(()=>{
+    axios.post("http://localhost:8181/getRoomCode")
+      .then(res=>{
+        setRoomCode(res.data);
+        setIsLoading(false);
+      });
+  }, []);
+  // 사용자가 채팅 치면 작동하는 핸들러
   const enterUserText = (event) => {
     if (event.key === 'Enter') {
-      const newChat = {
-        userName: "1",
-        userContext: event.target.value
-      };
-      // 기존 채팅 배열에 새로운 채팅 추가
-      setChatArray([...chatArray, newChat]);
+      const userId = getCookieValue("userId"); // userId 쿠키 값 가져오기
+      const userContext = event.target.value;
+      axios.post("http://localhost:8181/addChat", {userId, userContext});                                                                               
       // 입력 창 초기화
       setUserText("");
     }
   };
+
+  //서버에서 채팅 내용을 가져오는 함수
+  useEffect(() => {
+  const getChat = async () => {
+    try {
+        const chatList=await axios.post("http://localhost:8181/getChatList");
+        console.log(chatList);
+        console.log(chatList.data[0].userName);
+        console.log(chatList.data[0].userContext);
+        setChatArray(chatList.data);
+      } catch (error) {
+        console.error("채팅 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
+    getChat(); // 최초 렌더링 시 한 번 실행
+    const intervalId = setInterval(getChat, 1000);
+    // 컴포넌트가 언마운트될 때 clearInterval을 통해 인터벌 정리
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
     
   return (
     <div className='wrapper'>
@@ -84,7 +115,7 @@ const getCookieValue = (key) => {
       </div>
       {/* 중앙 화면 */}
       <div className='chat-part'>
-        <RoomCodeButton roomCode={"1234"} />
+        {isLoading?(<span>Loading...</span>):(<RoomCodeButton roomCode={roomCode} />)}
         <span className='__present-state'>게임 시작을 해주세요!</span>
         <div className='__chat-box'>
           <div className='__chatiing-box'>
