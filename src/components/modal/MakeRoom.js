@@ -12,14 +12,23 @@ const MakeRoom = ({click, change, codeAndId}) => {
         }        
     }
     // 규칙 1 , 2 클릭하는거
-    const [clicked , setClicked] = useState(false);
+    const [clicked , setClicked] = useState(false); 
     const clickRadioButtonHandler = () =>{
         setClicked(!clicked);
     } 
+    const [userName, setUserName] = useState("아무개");
     const postUserInfo = () =>{
-        axios.post("http://localhost:8181/create-room",  { withCredentials: true });
-        const cookies = document.cookie;
-        console.log(cookies);
+        axios.post("http://localhost:8181/create-room")
+            .then(res =>{
+                console.log("입력받은 데이터: "+ res.data);
+                setUserName(res.data);
+            });
+        
+        cookie.save("userId", userName,{path: '/'});
+        const encodedString = document.cookie;
+        const decodedString = decodeURIComponent(encodedString);
+        const jsonData = JSON.parse(decodedString);
+        console.log("쿠키의 저장된 값:" + jsonData);
     }
     
     
