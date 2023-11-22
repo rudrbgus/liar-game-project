@@ -17,7 +17,9 @@ const MakeRoom = ({click, change, codeAndId}) => {
         setClicked(!clicked);
     } 
     const postUserInfo = () =>{
-        axios.post("http://localhost:8181/create-room");
+        axios.post("http://localhost:8181/create-room",  { withCredentials: true });
+        const cookies = document.cookie;
+        console.log(cookies);
     }
     
     

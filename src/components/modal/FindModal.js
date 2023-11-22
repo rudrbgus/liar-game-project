@@ -22,14 +22,9 @@ const FindModal = ({click, change}) => {
         click();
         change(2);
     }
-    const postUserInfo = () =>{
-        const temporaryIdentifier = generateTemporaryIdentifier();
-        axios.post("http://localhost:8181/compare-room-code", {inputRoomCode});
+    const postUserInfo = async () =>{
+            const response = await axios.post("http://localhost:8181/compare-room-code", { inputRoomCode });    
     }
-    // 임시 식별자를 생성하는 함수
-    const generateTemporaryIdentifier = () => {
-        return Math.random().toString(36).substring(7);
-    };
   return (
     <div className='find-modal-frame' onClick={clickModalFrameHandler}>
         <div className='__body'>
