@@ -4,6 +4,7 @@ import UserBox from '../components/box/UserBox';
 import ChatBox from '../components/box/ChatBox';
 import RoomCodeButton from '../components/button/RoomCodeButton';
 import axios from 'axios';
+import cookie from 'react-cookies';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
@@ -26,7 +27,8 @@ const InGamePage = () => {
     const handleBeforeUnload = async () => {
       // 사용자가 페이지를 떠날 때 서버에 신호 보내기
       try {
-        await axios.post('http://localhost:8181/user-leave');
+        const userId = getCookieValue("userId"); // userId 쿠키 값 가져오기
+        await axios.post('http://localhost:8181/user-leave', {userId});
       } catch (error) {
         console.error("사용자 떠남 신호 전송 중 오류 발생:", error);
       }
@@ -47,6 +49,17 @@ const InGamePage = () => {
     };
   }, []);
 
+  // 쿠키에서 특정 키의 값을 가져오는 함수
+const getCookieValue = (key) => {
+  const cookiePairs = document.cookie.split("; ");
+  for (let i = 0; i < cookiePairs.length; i++) {
+    const pair = cookiePairs[i].split("=");
+    if (pair[0] === key) {
+      return pair[1];
+    }
+  }
+  return null;
+};
   const enterUserText = (event) => {
     if (event.key === 'Enter') {
       const newChat = {
