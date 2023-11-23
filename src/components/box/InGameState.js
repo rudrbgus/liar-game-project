@@ -28,13 +28,15 @@ const InGameState = () => {
                 setEncodedUri('인코딩 중 에러가 발생했습니다.');
             }
       };
-    // ㅇ
+    // 유저 숫자랑 방장 ID 가져오기
+    const [userNumber, setuserNumber] = useState(1);
     useEffect(() => {
         const fetchData = async () => {
           try {
+            const roomCode = getCookieValue("room-code");
              // 유저 숫자 가져오기
-            const userNumberResponse = await axios.get('http://localhost:8181/getUserNumber');
-            const userNumber = userNumberResponse.data;
+            const userNumberResponse = await axios.post('http://localhost:8181/getUserNumber', {roomCode});
+            setuserNumber(userNumberResponse.data);
             // 방장 Id 가져오는 로직
             axios.get('http://localhost:8181/getSuperUserID')
                 .then(res=>{

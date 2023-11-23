@@ -5,7 +5,7 @@ import Button from '../button/Button';
 import axios from 'axios';
 import cookie from 'react-cookies';
 
-const MakeRoom = ({click, change, codeAndId}) => {
+const MakeRoom = ({click, change}) => {
     // 모달 밖의 누르면
     const clickModalFrameHandler = (event) =>{        
         if(event.target.className === 'modal-frame'){            
@@ -17,22 +17,20 @@ const MakeRoom = ({click, change, codeAndId}) => {
     const clickRadioButtonHandler = () =>{
         setClicked(!clicked);
     } 
-    const [userName, setUserName] = useState("아무개");
+    const [isClear, setIsClear] = useState(false);
     const postUserInfo = () =>{
         axios.post("http://localhost:8181/create-room")
-        .then(res => {
-            console.log("입력받은 데이터: " + res.data);
-            setUserName(res.data);
-            return res.data; // 이 부분이 추가된 부분
+        .then(res => { // 임의의 이름을 보내줌 서버에서
+            cookie.save("userId", res.data, { path: '/' });  // <- 그걸 클라이언트 쿠키에 저장
+            console.log("쿠키에 저장된 값: " + res.data);
+            return true; // 이 부분이 추가된 부분
         })
-        .then((userData) => {
-            cookie.save("userId", userData, { path: '/' });
-            console.log("쿠키에 저장된 값: " + userData);
+        .then((isClear) => {
+            setIsClear(isClear);
+            click();
+            change(2);
         });
     }
-    
-    
-    
 
 return (
     <div className='modal-frame' onClick={clickModalFrameHandler}> 
@@ -46,8 +44,6 @@ return (
                     </div>
                     <Button title="방 만들기" style="button5" event={()=>{
                         postUserInfo();
-                        click();
-                        change(2);
                     }} />
                 </div>            
         </div>

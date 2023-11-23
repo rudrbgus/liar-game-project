@@ -2,20 +2,11 @@ import './App.scss';
 import Main from './Main';
 import { useState, useEffect } from 'react';
 import InGamePage from './InGamePage';
-import axios from 'axios';
 
-
-function App() {
-  
-  const [msg, setMsg] = useState([]);
-  
-  useEffect(()=>{ // 페이지가 열리면 하는 행동
-    axios.get('http://localhost:8181/hello')
-      .then(res => setMsg(res.data))
-  }); 
+function App() {  
 
   const [screenNumber, setScreenNumber] = useState(1);  // 스크린 넘버 1이면 메인화면 2면 게임화면
-  const screenNumberToggleHandler = (change) =>{
+  const screenNumberToggleHandler = (change) =>{ // 화면 체인지 하는 핸들러
       setScreenNumber(change);
   }
   

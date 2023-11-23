@@ -11,15 +11,15 @@ import InGameState from '../components/box/InGameState';
 const InGamePage = () => {
   const [userText, setUserText] = useState(""); // 유저 채팅
   const [chatArray, setChatArray] = useState([]); // 유저 채팅 배열
-  const[userNameList, setUserNameList] = useState([]);  
+  
 
   
-  
+  const[userNameList, setUserNameList] = useState([]); // 유저 리스트
   // 유저 이름 가져오는 effect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.post("http://localhost:8181/get-user-list");
+        const res = await axios.post("http://localhost:8181/get-user-list", {roomCode});
         setUserNameList(res.data);
         console.log(res.data);
       } catch (error) {
@@ -68,13 +68,14 @@ const InGamePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [roomCode, setRoomCode] = useState("1234");
   useEffect(()=>{
-    axios.post("http://localhost:8181/getRoomCode")
+    axios.post("http://localhost:8181/getRoomCode", {userName: userNameList[0]})
       .then(res=>{
         setRoomCode(res.data);
+        cookie.save("room-code", res.data);
         setIsLoading(false);
       });
   }, []);
-  
+
   // 사용자가 채팅 치면 작동하는 핸들러
   const enterUserText = (event) => {
     if (event.key === 'Enter') {
@@ -92,9 +93,14 @@ const InGamePage = () => {
     try {
         const chatList=await axios.post("http://localhost:8181/getChatList");
         console.log(chatList);
-        console.log(chatList.data[0].userName);
-        console.log(chatList.data[0].userContext);
-        setChatArray(chatList.data);
+        if(chatList.data[0].userName === "없습니다")
+        {
+          console.log("아직 채팅 내용이 없습니다");
+        }else{
+          console.log(chatList.data[0].userName);
+          console.log(chatList.data[0].userContext);
+          setChatArray(chatList.data);
+        }
       } catch (error) {
         console.error("채팅 데이터를 가져오는 중 오류 발생:", error);
       }
