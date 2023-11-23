@@ -5,12 +5,14 @@ import ChatBox from '../components/box/ChatBox';
 import RoomCodeButton from '../components/button/RoomCodeButton';
 import axios from 'axios';
 import cookie from 'react-cookies';
+import InGameState from '../components/box/InGameState';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
   const [userText, setUserText] = useState(""); // 유저 채팅
   const [chatArray, setChatArray] = useState([]); // 유저 채팅 배열
   const[userNameList, setUserNameList] = useState([]);  
+
   
   
   // 유저 이름 가져오는 effect
@@ -72,6 +74,7 @@ const InGamePage = () => {
         setIsLoading(false);
       });
   }, []);
+  
   // 사용자가 채팅 치면 작동하는 핸들러
   const enterUserText = (event) => {
     if (event.key === 'Enter') {
@@ -103,7 +106,7 @@ const InGamePage = () => {
       clearInterval(intervalId);
     };
   }, []);
-    
+
   return (
     <div className='wrapper'>
       {/* 왼쪽 화면 */}
@@ -116,7 +119,8 @@ const InGamePage = () => {
       {/* 중앙 화면 */}
       <div className='chat-part'>
         {isLoading?(<span>Loading...</span>):(<RoomCodeButton roomCode={roomCode} />)}
-        <span className='__present-state'>게임 시작을 해주세요!</span>
+        {/* 게임 상황 */}
+        <InGameState/>
         <div className='__chat-box'>
           <div className='__chatiing-box'>
             {/* 채팅 내용을 매핑하여 출력 */}

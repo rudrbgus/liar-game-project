@@ -19,11 +19,6 @@ function App() {
       setScreenNumber(change);
   }
   
-  
-  
-  
-
-  
   if(screenNumber === 1)
   {
     return (

@@ -46,8 +46,8 @@ return (
                     </div>
                     <Button title="방 만들기" style="button5" event={()=>{
                         postUserInfo();
-                        click()
-                        change(2)
+                        click();
+                        change(2);
                     }} />
                 </div>            
         </div>
