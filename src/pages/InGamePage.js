@@ -31,7 +31,8 @@ const InGamePage = () => {
       // 사용자가 페이지를 떠날 때 서버에 신호 보내기
       try {
         const userId = getCookieValue("userId"); // userId 쿠키 값 가져오기
-        await axios.post('http://localhost:8181/user-leave', {userId});
+        const roomCode = getCookieValue("room-code"); // room-code 쿠키 값 가져오기
+        await axios.post('http://localhost:8181/user-leave', {userId, roomCode});
       } catch (error) {
         console.error("사용자 떠남 신호 전송 중 오류 발생:", error);
       }
@@ -91,16 +92,12 @@ const InGamePage = () => {
   useEffect(() => {
   const getChat = async () => {
     try {
-        const chatList=await axios.post("http://localhost:8181/getChatList");
-        console.log(chatList);
-        if(chatList.data[0].userName === "없습니다")
-        {
-          console.log("아직 채팅 내용이 없습니다");
-        }else{
-          console.log(chatList.data[0].userName);
-          console.log(chatList.data[0].userContext);
+          const chatList=await axios.post("http://localhost:8181/getChatList");
+          //console.log(chatList);
+          //console.log(chatList.data[0].userName);
+          //console.log(chatList.data[0].userContext);
           setChatArray(chatList.data);
-        }
+        
       } catch (error) {
         console.error("채팅 데이터를 가져오는 중 오류 발생:", error);
       }

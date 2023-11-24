@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 const InGameState = () => {
 
-    const [presentState, setPresentState] = useState("Loading"); // 방 상태 정하는 State
+    
 
     // 쿠키에서 특정 키의 값을 가져오는 함수
     const getCookieValue = (key) => {
@@ -17,45 +17,49 @@ const InGameState = () => {
     return null;
     };
     // 인코딩 하는 함수
-    const [originalUri, setOriginalUri] = useState('');
+    
     const [encodedUri, setEncodedUri] = useState('');
-    const handleEncodeUri = (originalUri) => {
-            try {
-                const encodedValue = encodeURIComponent(originalUri);
-                setEncodedUri(encodedValue);
-            } catch (error) {
-                console.error('URI 인코딩 중 에러 발생:', error);
-                setEncodedUri('인코딩 중 에러가 발생했습니다.');
-            }
-      };
+
+    // 방 상태 정하는 State
+    const [presentState, setPresentState] = useState("Loading"); 
     // 유저 숫자랑 방장 ID 가져오기
-    const [userNumber, setuserNumber] = useState(1);
     useEffect(() => {
         const fetchData = async () => {
           try {
             const roomCode = getCookieValue("room-code");
-             // 유저 숫자 가져오기
-            const userNumberResponse = await axios.post('http://localhost:8181/getUserNumber', {roomCode});
-            setuserNumber(userNumberResponse.data);
-            // 방장 Id 가져오는 로직
-            axios.get('http://localhost:8181/getSuperUserID')
+            axios.post('http://localhost:8181/getSuperUserID', {roomCode})
                 .then(res=>{
-                    setOriginalUri(res.data); // <- 방장의 이름이 들어감
-                });
-            handleEncodeUri(originalUri);
-
-            if (userNumber < 1) {
-              setPresentState(`최소 3명이 있어야 게임을 할 수 있어요 현재인원: ${userNumber}`);
-            } else {
-              // 방장 한테만 보이는 상태
-              if (getCookieValue("userId") === encodedUri) {
-                setPresentState('니 가 방 장 이 야');
-              } 
-              // 일반유저한테 보이는 게임 상태
-              else {
-                setPresentState(`게임 시작 해주세요 현재 인원: ${userNumber}`);
-              }
-            }
+                    console.log("서버에서 받은 방장 이름: "+ res.data);
+                    const a = encodeURIComponent(res.data);
+                    return a;
+                }).then((Id)=>{
+                   // 유저 숫자 가져오기
+                  axios.post('http://localhost:8181/getUserNumber', {roomCode})
+                    .then(res=>{
+                      console.log("입력받은 유저의 수: " + res.data);
+                      return res.data;
+                    })
+                    .then(number=>{
+                      if(number<1){
+                        const newText = `최소 한명이 있어야 할 수 있어요 현재 인원: ${number}`;
+                        setPresentState(newText);
+                      }
+                      else {
+                      // 방장 한테만 보이는 상태
+                      //console.log(getCookieValue("userId"));
+                      //console.log(Id);
+                      if (getCookieValue("userId") === Id){
+                        
+                        setPresentState("방장");
+                      } 
+                      // 일반유저한테 보이는 게임 상태
+                      else {
+                        const newText = `게임 시작 해주세요 현재 인원: ${number}`;
+                        setPresentState(newText);
+                      }
+                }
+              });
+            });
           } catch (error) {
             console.error('데이터를 불러오는 중 에러 발생:', error);
           }
