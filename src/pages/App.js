@@ -9,6 +9,10 @@ function App() {
   const screenNumberToggleHandler = (change) =>{ // 화면 체인지 하는 핸들러
       setScreenNumber(change);
   }
+  const [userList, setUserList] = useState([]);
+  const getUserList = (userList) =>{
+    setUserList(userList)
+  }
   
   if(screenNumber === 1)
   {
@@ -25,7 +29,7 @@ function App() {
         <InGamePage/>
       </>
     )
-    }
+  }
   }
 
 export default App;

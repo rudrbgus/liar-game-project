@@ -2,10 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Button from '../button/Button';
 
-const InGameState = () => {
-
-    
-
+const InGameState = ({clicked}) => {
     // 쿠키에서 특정 키의 값을 가져오는 함수
     const getCookieValue = (key) => {
     const cookiePairs = document.cookie.split("; ");
@@ -17,10 +14,6 @@ const InGameState = () => {
     }
     return null;
     };
-    // 인코딩 하는 함수
-    
-    const [encodedUri, setEncodedUri] = useState('');
-
     // 방 상태 정하는 State
     const [presentState, setPresentState] = useState("Loading"); 
     const [isSatisfied, setIsSatisfied] = useState(false);
@@ -42,7 +35,7 @@ const InGameState = () => {
                       return res.data;
                     })
                     .then(number=>{
-                      if(number<3){
+                      if(number<1){
                         const newText = `최소 한명이 있어야 할 수 있어요 현재 인원: ${number}`;
                         setPresentState(newText);
                       }
@@ -75,14 +68,20 @@ const InGameState = () => {
           clearInterval(intervalId);
         };
       }, []);
-
     return (
       <>
       {
-        isSatisfied ? (<Button title ={"게임 시작"} style={"button5"} event={()=>{}}/>) : (<span className='__present-state'>{presentState}</span>)
+        isSatisfied ? (
+          <div className='button'> 
+            <Button title ={"게임 시작"} style={"button5"} event={()=>{
+              console.log("게임 시작 버튼 클릭함");
+              clicked(true);
+            }}/>
+        </div>
+        ) : 
+        (<span className='__present-state'>{presentState}</span>)
       }
       </>
-      
         
     )
 }
