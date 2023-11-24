@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import Button from '../button/Button';
 
 const InGameState = () => {
 
@@ -22,6 +23,7 @@ const InGameState = () => {
 
     // 방 상태 정하는 State
     const [presentState, setPresentState] = useState("Loading"); 
+    const [isSatisfied, setIsSatisfied] = useState(false);
     // 유저 숫자랑 방장 ID 가져오기
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +42,7 @@ const InGameState = () => {
                       return res.data;
                     })
                     .then(number=>{
-                      if(number<1){
+                      if(number<3){
                         const newText = `최소 한명이 있어야 할 수 있어요 현재 인원: ${number}`;
                         setPresentState(newText);
                       }
@@ -49,7 +51,7 @@ const InGameState = () => {
                       //console.log(getCookieValue("userId"));
                       //console.log(Id);
                       if (getCookieValue("userId") === Id){
-                        
+                        setIsSatisfied(true);
                         setPresentState("방장");
                       } 
                       // 일반유저한테 보이는 게임 상태
@@ -75,7 +77,13 @@ const InGameState = () => {
       }, []);
 
     return (
-        <span className='__present-state'>{presentState}</span>
+      <>
+      {
+        isSatisfied ? (<Button title ={"게임 시작"} style={"button5"} event={()=>{}}/>) : (<span className='__present-state'>{presentState}</span>)
+      }
+      </>
+      
+        
     )
 }
 
