@@ -6,7 +6,6 @@ import "./InGamePageFinal.scss";
 
 const InGamePageFinal = ({roomCode}) => {
     const [userText, setUserText] = useState(""); // 유저 채팅
-    const [gameStart, setGameStart]=useState("false");
     const [isLoading, setIsLoading] = useState("false");
     const [userList, setUserList] = useState([]);
     const [chatArray, setChatArray] = useState([]); // 유저 채팅 배열
@@ -16,7 +15,7 @@ const InGamePageFinal = ({roomCode}) => {
     const [goalWord, setGoalWord] = useState("56448455413216844");
     const [ready, setReady] = useState(false);
     const [flag, setFlag] = useState(false);
-    const [num, setNum] = useState(0);
+    const [num, setNum] = useState(1);
     const [userName, setUserName] = useState("");
 
     
@@ -39,7 +38,8 @@ const InGamePageFinal = ({roomCode}) => {
             const userId = getCookieValue("userId"); // userId 쿠키 값 가져오기
             const userContext = event.target.value;
             axios.post("http://localhost:8181/addGameChat", {userId, userContext});
-            nextUser();
+            axios.get("http://localhost:8181/increaseNum");  
+            axios.get("http://localhost:8181/addGameState");                    
             // 입력 창 초기화
             setUserText("");
         }
@@ -68,7 +68,7 @@ const InGamePageFinal = ({roomCode}) => {
         const getGameInfo = () =>{
             axios.post("http://localhost:8181/get-user-list", {roomCode})
                 .then(res=>{
-                    console.log("들어온 사용자"+res.data);
+                    console.log("들어온 사용자: " + res.data);
                     setUserList(res.data);
                     setIsLoading(true);
                 });
@@ -107,50 +107,73 @@ const InGamePageFinal = ({roomCode}) => {
     useEffect(()=>{
         if(ready){
             // 이제 게임을 시작합니다 
-            setPresentState("이제 게임을 시작합니다");
-            axios.post("http://localhost:8181/getPresentUser", {roomCode, num})
-                .then(res=>{
-                    setUserName(res.data);
-                    setNum(prevNum => prevNum + 1);
-                });  
+            axios.post("http://localhost:8181/getPrsentState", {num})
+                .then((res)=>{
+                    setPresentState(res.data);
+                    setNum(prevNumber=>prevNumber+1);
+                });
             setTimeout(() => {
                 setFlag(true);
-              }, 3000);
+            }, 3000);
         }
     }, [ready]);
-
     useEffect(()=>{
         if(flag){
-            setPresentState(`\n${userName}님 주제어의 대해서 설명해주세요.`);
-            setFlag(false);
+            axios.post("http://localhost:8181/getPrsentState", {num})
+                .then((res)=>{
+                    setPresentState(res.data);
+                });
         }
     }, [flag]);
-
-    const nextUser = () => {
-        console.log("다음 차례 실행!!");
-        axios.post("http://localhost:8181/getPresentUser", {roomCode, num})
-                .then(res=>{
-                    setUserName(res.data);
-                    setNum(prevNum => prevNum + 1);
-                });  
-                setTimeout(() => {
-                    setFlag(true);
-                }, 1000);                
+    useEffect(()=>{
+        if(flag){            
+            axios.post("http://localhost:8181/getPrsentState", {num})
+                .then((res)=>{
+                    setPresentState(res.data);
+                });
+        }
+    }, [num]);
+    useEffect(()=>{
+        if(flag){
+            axios.post("http://localhost:8181/getGameState")
+                .then((res)=>{
+                    console.log(res.data);
+                    setNum(res.data+1);
+                });
+        }
+    }, [userName]);
+    const increase = () => {
+        axios.get("http://localhost:8181/increaseNum");  
+        axios.get("http://localhost:8181/addGameState");
     }
+
+
+    // 현재 차례의 이름 가져오기
+    useEffect(()=>{
+        const getPresentUser = ()=>{
+            //console.log("실행중");
+            axios.post("http://localhost:8181/getPresentUser", {roomCode})
+                .then(res=>{
+                        //console.log("가져온 이름: " + res.data);
+                        setUserName(res.data);
+                });  
+            };
+        setInterval(getPresentUser, 1000);
+    }, []);
 
   return (
     <div className='ingame-wrapper'>
         {/* 왼쪽 화면 */}
         <div className='user-box-left-part'>
-            <UserBox userName={userList[0]} show={true} className="ingame-first-user-box"/>
-            <UserBox userName={userList[1]} show={true} className="ingame-second-user-box"/>
-            <UserBox userName={userList[2]} show={true} className="ingame-third-user-box"/>
-            <UserBox userName={userList[3]} show={true} className="ingame-forth-user-box"/>
+            <UserBox userName={userList[0]} show={true} increase={increase} className="ingame-first-user-box"/>
+            <UserBox userName={userList[1]} show={true} increase={increase} className="ingame-second-user-box"/>
+            <UserBox userName={userList[2]} show={true} increase={increase} className="ingame-third-user-box"/>
+            <UserBox userName={userList[3]} show={true} increase={increase} className="ingame-forth-user-box"/>
         </div>
         {/* 중앙 화면 */}
         <div className='chat-part'>
-          <div className='role'>{role}</div>
-          <div className='word'>{goalWord}</div>
+        <div className='role'>{role}</div>
+        <div className='word'>{goalWord}</div>
           {/* 게임 상황 */}
           {isLoading?
             (<span className='__present-state'>{presentState}</span>)
