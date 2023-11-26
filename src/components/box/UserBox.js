@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./UserBox.scss";
 import axios from 'axios';
 
 const UserBox = ({userName, show, increase}) => {  
+  const [isSend, setIsSend] = useState(false);
   // 쿠키에서 특정 키의 값을 가져오는 함수
   const getCookieValue = (key) => {
     const cookiePairs = document.cookie.split("; ");
