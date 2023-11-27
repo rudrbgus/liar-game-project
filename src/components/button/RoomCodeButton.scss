@@ -6,7 +6,8 @@
     & .__text{
         flex: 1;
         height: 100%;
-        background: rebeccapurple;
+        background: white;
+        border: 1px solid #000;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -19,7 +20,8 @@
         font-size: 2rem;
         align-items: center;
         justify-content: center;
-        background: greenyellow;
+        background: white;
+        border: 1px solid #000;
     }
 }
 

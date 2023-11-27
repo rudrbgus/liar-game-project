@@ -37,4 +37,4 @@ const UserBox = ({userName, show, increase}) => {
   )
 }
 
-export default UserBox
+export default UserBox;

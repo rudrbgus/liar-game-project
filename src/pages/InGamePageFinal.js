@@ -199,6 +199,13 @@ const InGamePageFinal = ({roomCode}) => {
                 />
             </div>
         </div>
+        {/* 오른쪽 화면 */}
+        <div className='user-box-right-part'>
+            <UserBox userName={userList[4]} show={true} className="five-user-box"/>
+            <UserBox userName={userList[5]} show={true} className="six-user-box"/>
+            <UserBox userName={userList[6]} show={true} className="seven-user-box"/>
+            <UserBox userName={userList[7]} show={true} className="eight-user-box"/>
+      </div>
     </div>
   )
 }
