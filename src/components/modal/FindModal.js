@@ -41,10 +41,14 @@ const FindModal = ({click, change}) => {
                 return res.data; // 이 부분이 추가된 부분
             })
             .then((userData) => {
-                cookie.save("userId", userData, { path: '/' });
-                console.log("쿠키에 저장된 값: " + userData);
-                click();
-                change(2);
+                if(userData === "실패"){
+
+                }else{
+                    cookie.save("userId", userData, { path: '/' });
+                    console.log("쿠키에 저장된 값: " + userData);
+                    click();
+                    change(2);
+                }
             });
             ;    
     }
@@ -52,9 +56,9 @@ const FindModal = ({click, change}) => {
     <div className='find-modal-frame' onClick={clickModalFrameHandler}>
         <div className='__body'>
             <div className='__title'>
-                방 코드
+                방 입장
             </div>
-            <input className='__input' type='input' onChange={handleInputChange}>
+            <input className='__input' type='input' onChange={handleInputChange} placeholder='방 코드를 입력해주세요'>
             </input>
             <Button title="확인" style="button6" event={clickCheckButtonHandler}/>
         </div>
