@@ -35,8 +35,8 @@ const InGameState = ({clicked}) => {
                       return res.data;
                     })
                     .then(number=>{
-                      if(number<1){
-                        const newText = `최소 한명이 있어야 할 수 있어요 현재 인원: ${number}`;
+                      if(number<3){
+                        const newText = `최소 세명이 있어야 할 수 있어요 현재 인원: ${number}`;
                         setPresentState(newText);
                       }
                       else {
