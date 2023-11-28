@@ -16,13 +16,16 @@ const Main = ({change}) => {
   const clickStartButtonHandler = () =>{
     setStart(!start);    
   }
+  // 게임 방법 버튼을 누르면 실행되는 함수
   const clickHowButtonHandler = () =>{
     setIsOpenHowButton(!isOpenHowButton);
   }
+  // 방 만들기 버튼 누르면 실행되는 함수
   const clickMakeRoomButtonHandler = () =>{    
     setMake(!make);
     console.log("방만들기 버튼 누름");
   }
+  // 방 찾기 버튼
   const clickFindRoomButtonHandler = () =>{
     setFind(!find);
     console.log("방 찾기 버튼 누름");

@@ -12,12 +12,6 @@ const MakeRoom = ({click, change}) => {
             click();
         }        
     }
-    // 규칙 1 , 2 클릭하는거
-    const [clicked , setClicked] = useState(false); 
-    const clickRadioButtonHandler = () =>{
-        setClicked(!clicked);
-    } 
-    const [isClear, setIsClear] = useState(false);
     const postUserInfo = () =>{
         axios.post("http://localhost:8181/create-room")
         .then(res => { // 임의의 이름을 보내줌 서버에서
@@ -26,7 +20,6 @@ const MakeRoom = ({click, change}) => {
             return true; // 이 부분이 추가된 부분
         })
         .then((isClear) => {
-            setIsClear(isClear);
             click();
             change(2);
         });
