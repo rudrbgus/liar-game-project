@@ -17,8 +17,7 @@ const Button = ({title, style, event}) => {
     <>
     <div className={classStyle} onClick={event} >
       <span>{title}</span>
-    </div>       
-    
+    </div>           
     </>
   )
 }

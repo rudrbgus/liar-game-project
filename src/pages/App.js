@@ -1,13 +1,35 @@
 import './App.scss';
-import Header from '../components/header/Header';
 import Main from './Main';
+import { useState, useEffect } from 'react';
+import InGamePage from './InGamePage';
 
-function App() {
-  return (
-    <div className="App">
-      <Main/>
-    </div>
-  );
-}
+function App() {  
+
+  const [screenNumber, setScreenNumber] = useState(1);  // 스크린 넘버 1이면 메인화면 2면 게임화면
+  const screenNumberToggleHandler = (change) =>{ // 화면 체인지 하는 핸들러
+      setScreenNumber(change);
+  }
+  const [userList, setUserList] = useState([]);
+  const getUserList = (userList) =>{
+    setUserList(userList)
+  }
+  
+  if(screenNumber === 1)
+  {
+    return (
+      <>
+        <div className="App">
+          <Main change ={screenNumberToggleHandler}  />
+        </div>        
+      </>
+    );
+  }else if(screenNumber === 2){
+    return(
+      <>
+        <InGamePage/>
+      </>
+    )
+  }
+  }
 
 export default App;
