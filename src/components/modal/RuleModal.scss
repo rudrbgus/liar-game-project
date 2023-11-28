@@ -1,0 +1,67 @@
+@use "../../styles/common.scss" as common;
+@import url();
+.modal-frame{    
+    font-family: common.$googleFont;
+    position: absolute; // 절대 위치로 바꾸고
+    top: 0;
+    left: 0;
+    display: flex; // flex 형태로 바꾸고
+    width: 100%;
+    height: 100%;    
+    text-align: center; // 글씨도 중앙배치
+    z-index: 10;
+    background: rgba($color: #000000, $alpha: 0.7);
+    & .__body{          
+        &.mount{
+            animation: smoothAppear 1s ease-in-out;
+        }     
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 35%;
+        height: 80%;
+        background: whitesmoke;    
+        display: flex;      
+        flex-direction: column;  
+        align-items: center;    
+        & .__content{            
+            font-size: 1.5rem;
+            display: flex;
+            flex-direction: column;   
+            text-overflow: hidden;     
+            & span{                
+            }    
+            & .title{
+                font-size: 4rem;
+                font-weight: 500;
+                margin: 1.5rem 0;                
+            }
+            & .red{
+                color: red;
+            }
+            & .blue{
+                color: blue;
+            }
+            & p{                
+                width: 80%;
+                margin: 0 auto;
+                text-align:justify;
+                line-height: 3rem;
+            }
+        }
+    }
+}
+
+@keyframes smoothAppear{
+    from{
+        opacity: 0;
+        left: 50%;
+        transform: translate(-50%, -55%);
+    }
+    to{
+        opacity: 1;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
