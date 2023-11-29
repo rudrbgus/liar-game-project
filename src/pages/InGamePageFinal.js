@@ -98,7 +98,7 @@ const InGamePageFinal = ({roomCode}) => {
             setGoalWord(goalWord1);
             setReady(true);
         }else{
-            const goalWord1 = "";
+            const goalWord1 = "주제어의 카테고리는 음식입니다";
             setGoalWord(goalWord1);
             }
             setReady(true);
