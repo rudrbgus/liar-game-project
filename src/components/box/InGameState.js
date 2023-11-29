@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Button from '../button/Button';
 
-const InGameState = ({clicked}) => {
+const InGameState = ({clicked, roomCode}) => {
     // 쿠키에서 특정 키의 값을 가져오는 함수
     const getCookieValue = (key) => {
     const cookiePairs = document.cookie.split("; ");
@@ -17,57 +17,32 @@ const InGameState = ({clicked}) => {
     // 방 상태 정하는 State
     const [presentState, setPresentState] = useState("Loading"); 
     const [isSatisfied, setIsSatisfied] = useState(false);
+    const [userNumber, setUserNumber] = useState(0);
+    const [superUserName, setSuperUserName] = useState("");
+
     // 유저 숫자랑 방장 ID 가져오기
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const roomCode = getCookieValue("room-code");
-            axios.post('http://localhost:8181/getSuperUserID', {roomCode})
-                .then(res=>{
-                    console.log("서버에서 받은 방장 이름: "+ res.data);
-                    const a = encodeURIComponent(res.data);
-                    return a;
-                }).then((Id)=>{
-                   // 유저 숫자 가져오기
-                  axios.post('http://localhost:8181/getUserNumber', {roomCode})
-                    .then(res=>{
-                      console.log("입력받은 유저의 수: " + res.data);
-                      return res.data;
-                    })
-                    .then(number=>{
-                      if(number<3){
-                        const newText = `최소 세명이 있어야 할 수 있어요 현재 인원: ${number}`;
-                        setPresentState(newText);
-                      }
-                      else {
-                      // 방장 한테만 보이는 상태
-                      //console.log(getCookieValue("userId"));
-                      //console.log(Id);
-                      if (getCookieValue("userId") === Id){
-                        setIsSatisfied(true);
-                        setPresentState("방장");
-                      } 
-                      // 일반유저한테 보이는 게임 상태
-                      else {
-                        const newText = `게임 시작 해주세요 현재 인원: ${number}`;
-                        setPresentState(newText);
-                      }
+        axios.post("http://localhost:8181/getUserNumber", roomCode)
+          .then(number =>{
+            setUserNumber(number);
+            return true;
+          })
+          .then(clear =>{
+            axios.post("http://localhost:8181/getSuperUserName", roomCode)
+              .then(getSuperUserName=>{
+                setSuperUserName(getSuperUserName);
+                return true
+              })
+              .then(clear =>{
+                if(getCookieValue("userName") === superUserName){
+                  isSatisfied(true);
+                }else{
+                  setPresentState("123");
                 }
-              });
-            });
-          } catch (error) {
-            console.error('데이터를 불러오는 중 에러 발생:', error);
-          }
-        };
-    
-        fetchData(); // 초기 데이터 불러오기
-        const intervalId = setInterval(fetchData, 1000);
-    
-        // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
-        return () => {
-          clearInterval(intervalId);
-        };
-      }, []);
+              })
+          });
+    }, []);
+
     return (
       <>
       {

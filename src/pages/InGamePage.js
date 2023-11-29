@@ -31,6 +31,17 @@ const InGamePage = () => {
     return null;
     };
 
+  // 사용자가 채팅 치면 작동하는 핸들러
+  const enterUserText = (event) => {
+    if (event.key === 'Enter') {
+      const userId = getCookieValue("userId"); // userId 쿠키 값 가져오기
+      const userContext = event.target.value;
+      axios.post("http://localhost:8181/addChat", {userId, userContext});                                                                               
+      // 입력 창 초기화
+      setUserText("");
+    }
+  };
+
   
   // 이 페이지가 마운트 되면
   useEffect(()=>{
@@ -55,7 +66,6 @@ const InGamePage = () => {
   }, [isGetRoomCode]);
 
 
-  
 
 
   return (
@@ -76,9 +86,12 @@ const InGamePage = () => {
           )
         }
       {/* 중앙 화면 */}
-        {isGetRoomCode ? (<RoomCodeButton roomCode={roomCode} />):(<div>Loading</div>)}
+      <div className='center-box'>
+        {/* 방 코드 */}
+          {isGetRoomCode ? (<RoomCodeButton roomCode={roomCode}/>):(<div>Loading</div>)}
         {/* 게임 상황 */}
-        
+          {isUserList ? (<InGameState roomCode={roomCode}/>):(<div>Loading</div>)}
+      </div>
       {/* 오른쪽 화면 */}
       {
         isUserList ? (
