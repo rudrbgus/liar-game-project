@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Button from '../button/Button';
 
-const InGameState = ({clicked, roomCode}) => {
+const InGameState = ({roomCode}) => {
     // 쿠키에서 특정 키의 값을 가져오는 함수
     const getCookieValue = (key) => {
     const cookiePairs = document.cookie.split("; ");
@@ -17,44 +17,51 @@ const InGameState = ({clicked, roomCode}) => {
     // 방 상태 정하는 State
     const [presentState, setPresentState] = useState("Loading"); 
     const [isSatisfied, setIsSatisfied] = useState(false);
-    const [userNumber, setUserNumber] = useState(0);
-    const [superUserName, setSuperUserName] = useState("");
+    const [userNumber, setUserNumber] = useState(0); // 유저 명수
+    const [superUserName, setSuperUserName] = useState("ㅇㅇ"); // 방의 방장 이름
 
-    // 유저 숫자랑 방장 ID 가져오기
+    //유저 숫자 가져오기
     useEffect(() => {
-        axios.post("http://localhost:8181/getUserNumber", roomCode)
+        axios.post("http://localhost:8181/getUserNumber", {roomCode})
           .then(number =>{
-            setUserNumber(number);
+            console.log(number.data);
+            setUserNumber(number.data);
             return true;
-          })
-          .then(clear =>{
-            axios.post("http://localhost:8181/getSuperUserName", roomCode)
-              .then(getSuperUserName=>{
-                setSuperUserName(getSuperUserName);
-                return true
-              })
-              .then(clear =>{
-                if(getCookieValue("userName") === superUserName){
-                  isSatisfied(true);
-                }else{
-                  setPresentState("123");
-                }
-              })
           });
     }, []);
-
+    // 방장 ID 가져오기
+    useEffect(()=>{
+      axios.post("http://localhost:8181/getSuperUserName", {roomCode})
+              .then(getSuperUserName=>{
+                console.log("서버에서 받은 방장 이름: " + getSuperUserName.data);
+                setSuperUserName(getSuperUserName.data);
+                return getSuperUserName.data;
+              })
+              .then(superName =>{
+                console.log(superName);
+                console.log(getCookieValue("userId"));
+                  if(getCookieValue("userId") === superName){
+                    setIsSatisfied(true);
+                  }else{
+                    setPresentState(`${userNumber}명 있습니다`);
+                  }
+              })
+      }, []);
+    
     return (
       <>
       {
-        isSatisfied ? (
+        isSatisfied ? 
+        (
           <div className='button'> 
             <Button title ={"게임 시작"} style={"button5"} event={()=>{
               console.log("게임 시작 버튼 클릭함");
-              clicked(true);
             }}/>
-        </div>
+          </div>
         ) : 
-        (<span className='__present-state'>{presentState}</span>)
+        (
+        <span className='__present-state'>{presentState}</span>
+        )
       }
       </>
         

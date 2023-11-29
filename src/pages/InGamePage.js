@@ -90,7 +90,7 @@ const InGamePage = () => {
         {/* 방 코드 */}
           {isGetRoomCode ? (<RoomCodeButton roomCode={roomCode}/>):(<div>Loading</div>)}
         {/* 게임 상황 */}
-          {isUserList ? (<InGameState roomCode={roomCode}/>):(<div>Loading</div>)}
+          {isUserList ? (<InGameState roomCode={roomCode}/>):(<div>Loading...</div>)}
       </div>
       {/* 오른쪽 화면 */}
       {
