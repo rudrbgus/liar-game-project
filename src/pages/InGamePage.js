@@ -6,6 +6,8 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import InGameState from '../components/box/InGameState';
 import InGamePageFinal from './InGamePageFinal';
+import SockJS from 'sockjs-client';
+import * as Stompjs from 'stompjs';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
@@ -30,6 +32,29 @@ const InGamePage = () => {
     }
     return null;
     };
+
+    const [messages, setMessages] = useState([]);
+    const [stompClient, setStompClient] = useState(null);
+
+    useEffect(() => {
+        const socket = new SockJS('/stomp/chat');
+        const stomp = Stompjs.over(socket);
+        
+    }, []);
+
+    const handleMessage = (message) => {
+        setMessages([...messages, message]);
+    };
+
+    const sendMessage = (text) => {
+        stompClient.send('/app/chat.sendMessage', {}, JSON.stringify({ content: text }));
+    };
+
+    const handleSend = (text) => {
+        sendMessage(text);
+    };
+    
+
 
   // 사용자가 채팅 치면 작동하는 핸들러
   const enterUserText = (event) => {
