@@ -22,9 +22,12 @@ const Main = ({change}) => {
   }
   // 방 만들기 버튼 누르면 실행되는 함수
   const clickMakeRoomButtonHandler = () =>{
-    axios.get("http://localhost:8181/create-room");
-    change(2);
-    console.log("방만들기 버튼 누름");
+    axios.post("http://localhost:8181/create-room")
+      .then((res)=>{
+        console.log("방 코드: "+res.data);
+        cookie.save("roomId",res.data);
+        change(2);
+      });
   }
   // 방 찾기 버튼
   const clickFindRoomButtonHandler = () =>{
