@@ -2,6 +2,7 @@ import './App.scss';
 import Main from './Main';
 import { useState, useEffect } from 'react';
 import InGamePage from './InGamePage';
+import Chat from './Chat';
 
 function App() {  
 
@@ -16,7 +17,8 @@ function App() {
     return (
       <>
         <div className="App">
-          <Main change ={screenNumberToggleHandler}  />
+          <Chat/>
+          {/* <Main change ={screenNumberToggleHandler}  /> */}
         </div>        
       </>
     );
