@@ -22,19 +22,8 @@ const Main = ({change}) => {
   }
   // 방 만들기 버튼 누르면 실행되는 함수
   const clickMakeRoomButtonHandler = () =>{
-    axios.post("http://localhost:8181/create-room")
-        .then(res => { // 임의의 이름을 보내줌 서버에서
-            console.log(res);
-            console.log(res.data[0]);
-            cookie.save("userId", res.data[0], { path: '/' });  // <- 그걸 클라이언트 쿠키에 저장
-            console.log("쿠키에 저장된 이름: " + res.data[0]);
-            cookie.save("roomCode", res.data[1]);
-            console.log("쿠키에 저장된 방 코드: " + res.data[1]);
-            return true; // 이 부분이 추가된 부분
-        })
-        .then((isClear)=>{
-            change(2);
-        });
+    axios.get("http://localhost:8181/create-room");
+    change(2);
     console.log("방만들기 버튼 누름");
   }
   // 방 찾기 버튼

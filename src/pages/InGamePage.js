@@ -40,10 +40,10 @@ const InGamePage = () => {
     const handleMessage = (message) => {
         setMessages([...messages, message]);
     };
-
+    
     const sendMessage = (text) => {
         stompClient.send('/app/chat.sendMessage', {}, JSON.stringify({ content: text }));
-    };
+    };  
 
     const handleSend = (text) => {
         sendMessage(text);

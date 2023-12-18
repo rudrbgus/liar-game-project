@@ -12,26 +12,7 @@ function App() {
   }
 
 
-  const connect = () => {
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-      console.log('Connected: ' + frame);
-      stompClient.subscribe('/topic/messages', function (response) {
-      showMessage(JSON.parse(response.body).content);
-      });
-    });
-  }
 
-  const showMessage = (message) => {
-    // 메시지를 처리하는 로직
-    console.log('Received: ' + message);
-}
-
-  const sendMessage= () => {
-    const message = { content: $('#message').val() };
-    stompClient.send("/app/chat", {}, JSON.stringify(message));
-}
   
   // 스크린이 1이면 Main 아니면 InGame 화면
   if(screenNumber === 1)
@@ -39,8 +20,7 @@ function App() {
     return (
       <>
         <div className="App">
-          <Chat/>
-          {/* <Main change ={screenNumberToggleHandler}  /> */}
+          <Main change ={screenNumberToggleHandler}/>
         </div>        
       </>
     );
