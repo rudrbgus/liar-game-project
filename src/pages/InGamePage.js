@@ -7,7 +7,6 @@ import cookie from 'react-cookies';
 import InGameState from '../components/box/InGameState';
 import InGamePageFinal from './InGamePageFinal';
 import SockJS from 'sockjs-client';
-import * as Stompjs from 'stompjs';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
@@ -36,11 +35,7 @@ const InGamePage = () => {
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
 
-    useEffect(() => {
-        const socket = new SockJS('/stomp/chat');
-        const stomp = Stompjs.over(socket);
-        
-    }, []);
+  
 
     const handleMessage = (message) => {
         setMessages([...messages, message]);
