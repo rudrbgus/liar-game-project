@@ -29,6 +29,7 @@ const InGameState = ({roomCode}) => {
             return true;
           });
     }, []);
+    
     // 방장 ID 가져오기
     useEffect(()=>{
       axios.post("http://localhost:8181/getSuperUserName", {roomCode})
@@ -38,7 +39,7 @@ const InGameState = ({roomCode}) => {
                 return getSuperUserName.data;
               })
               .then(superName =>{
-                console.log(superName);
+                console.log(superName); 
                 console.log(getCookieValue("userId"));
                   if(getCookieValue("userId") === superName){
                     setIsSatisfied(true);

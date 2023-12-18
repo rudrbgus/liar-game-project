@@ -72,7 +72,9 @@ const InGamePage = () => {
     }
     setIsGetRoomCode(true);  
     setWebSocket(socket);
+    
     return()=>{
+      console.log("소켓 제거");
       socket.close();
     }
   }, []);
@@ -85,13 +87,13 @@ const InGamePage = () => {
     if(isGetRoomCode){
       axios.post("http://localhost:8181/get-user-list", {roomCode: roomCode})
         .then((res)=>{
-          
           console.log(res.data);
           setUserList(res.data);
           setIsUserList(true);
-          const message = { content: 'Hello, Server!' };
-          websocket.send(JSON.stringify(message));
-
+          if(websocket.readyStatus === WebSocket.OPEN){
+            const message = { content: '1' };
+            websocket.send(JSON.stringify(message));
+          }
         });
     }
   }, [isGetRoomCode]);
@@ -105,10 +107,10 @@ const InGamePage = () => {
       {/* 왼쪽 화면 */}
         {isUserList ?(
           <div className='user-box-left-part'>
-            <UserBox userName={userList[0] ? userList[0].playerId: "미정"} show={true} className="first-user-box"/>
-            <UserBox userName={userList[1] ? userList[1].playerId: "미정"} show={true} className="second-user-box"/>
-            <UserBox userName={userList[2] ? userList[2].playerId: "미정"} show={true} className="third-user-box"/>
-            <UserBox userName={userList[3] ? userList[3].playerId: "미정"} show={true} className="forth-user-box"/>
+            <UserBox userName={userList[0] ? userList[0].playerId: "미정"} show={userList[0] ? true : false} className="first-user-box"/>
+            <UserBox userName={userList[1] ? userList[1].playerId: "미정"} show={userList[1] ? true : false} className="second-user-box"/>
+            <UserBox userName={userList[2] ? userList[2].playerId: "미정"} show={userList[2] ? true : false} className="third-user-box"/>
+            <UserBox userName={userList[3] ? userList[3].playerId: "미정"} show={userList[3] ? true : false} className="forth-user-box"/>
           </div>
           ):(
             <div>Loading</div>
@@ -125,10 +127,10 @@ const InGamePage = () => {
       {
         isUserList ? (
           <div className='user-box-right-part'>
-            <UserBox userName={userList[4]? userList[4].playerId: "미정"} show={true} className="five-user-box"/>
-            <UserBox userName={userList[5]? userList[5].playerId: "미정"} show={true} className="six-user-box"/>
-            <UserBox userName={userList[6]? userList[6].playerId: "미정"} show={true} className="seven-user-box"/>
-            <UserBox userName={userList[7]? userList[7].playerId: "미정"} show={true} className="eight-user-box"/>
+            <UserBox userName={userList[4]? userList[4].playerId: "미정"} show={userList[4] ? true : false} className="five-user-box"/>
+            <UserBox userName={userList[5]? userList[5].playerId: "미정"} show={userList[5] ? true : false} className="six-user-box"/>
+            <UserBox userName={userList[6]? userList[6].playerId: "미정"} show={userList[6] ? true : false} className="seven-user-box"/>
+            <UserBox userName={userList[7]? userList[7].playerId: "미정"} show={userList[7] ? true : false} className="eight-user-box"/>
           </div>
         ):(<div>Loading</div>)
       }
