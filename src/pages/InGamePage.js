@@ -7,6 +7,7 @@ import cookie from 'react-cookies';
 import InGameState from '../components/box/InGameState';
 import InGamePageFinal from './InGamePageFinal';
 import { Stomp } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
@@ -19,7 +20,8 @@ const InGamePage = () => {
   const [isGetRoomCode, setIsGetRoomCode] = useState(false);
   const [userList, setUserList] = useState([]); // 유저 리스트
   const [isUserList, setIsUserList] = useState(false);
-  const [websocket, setWebSocket] = useState(null);
+  const [stompClient, setStompClient] = useState(null);
+
 
   // 쿠키에서 특정 키의 값을 가져오는 함수
   const getCookieValue = (key) => {
@@ -34,9 +36,6 @@ const InGamePage = () => {
     };
 
     const [messages, setMessages] = useState([]);
-    const [stompClient, setStompClient] = useState(null);
-
-  
 
     const handleMessage = (message) => {
         setMessages([...messages, message]);
@@ -67,17 +66,10 @@ const InGamePage = () => {
   // 이 페이지가 마운트 되면
   useEffect(()=>{
     setRoomCode(getCookieValue("roomId")); // 방 코드 가져와서 방제목으로 설정함
-    const socket = new WebSocket("ws://localhost:8181/ws");
-    socket.onopen = () =>{
-      console.log("연결 성공");
-    }
-    setIsGetRoomCode(true);  
-    setWebSocket(socket);
-
-    socket.onmessage = (event) => {
-      const message = event.data;
-      console.log('Received message:', message);
-    };
+    const socket = new SockJS("http://localhost:8181/ws");
+    const stomp = Stomp.over(socket);
+    stomp.connect({}, ()=>{setStompClient(stomp)});
+    setIsGetRoomCode(true);      
     
     return()=>{
       console.log("소켓 제거");
@@ -85,28 +77,20 @@ const InGamePage = () => {
     }
   }, []);
 
-  const manageMessage = (message) => {
-    
-  }
-
+ 
 
 
 
   // 방 코드 입력 받고 나서
   useEffect(() => {
-    if(isGetRoomCode){
-      axios.post("http://localhost:8181/get-user-list", {roomCode: roomCode})
-        .then((res)=>{
-          console.log(res.data);
-          setUserList(res.data);
-          setIsUserList(true);
-          if(websocket.readyStatus === WebSocket.OPEN){
-            const message = { content: '1' };
-            websocket.send(JSON.stringify(message));
-          }
-        });
+    if(stompClient){
+      stompClient.subscribe('/topic/list', (list)=>{
+        const receviedList = JSON.parse(list.body);
+        console.log(receviedList);
+      });
+      stompClient.send("/app/giveMeList", {})
     }
-  }, [isGetRoomCode]);
+  }, [stompClient]);
 
 
   return (
