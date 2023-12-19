@@ -11,8 +11,6 @@ function App() {
       setScreenNumber(change);
   }
 
-
-
   
   // 스크린이 1이면 Main 아니면 InGame 화면
   if(screenNumber === 1)

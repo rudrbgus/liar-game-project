@@ -6,6 +6,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import InGameState from '../components/box/InGameState';
 import InGamePageFinal from './InGamePageFinal';
+import { Stomp } from '@stomp/stompjs';
 
 // 처음 방 만들고 사용자이름 입력 받는거임
 const InGamePage = () => {
@@ -72,12 +73,21 @@ const InGamePage = () => {
     }
     setIsGetRoomCode(true);  
     setWebSocket(socket);
+
+    socket.onmessage = (event) => {
+      const message = event.data;
+      console.log('Received message:', message);
+    };
     
     return()=>{
       console.log("소켓 제거");
       socket.close();
     }
   }, []);
+
+  const manageMessage = (message) => {
+    
+  }
 
 
 
