@@ -18,7 +18,8 @@ const InGamePage = () => {
   const [userList, setUserList] = useState([]); // 유저 리스트
   const [isUserList, setIsUserList] = useState(false);
   const [stompClient, setStompClient] = useState(null);
-
+  const [isConnecte, setIsConnecte] = useState(false);
+  const [receviedList, setReceviedList] = useState([]);
 
   // 쿠키에서 특정 키의 값을 가져오는 함수
   const getCookieValue = (key) => {
@@ -31,22 +32,6 @@ const InGamePage = () => {
       }
       return null;
     };
-
-    const [messages, setMessages] = useState([]);
-
-    const handleMessage = (message) => {
-        setMessages([...messages, message]);
-    };
-
-    const sendMessage = (text) => {
-        stompClient.send('/app/chat.sendMessage', {}, JSON.stringify({ content: text }));
-    };  
-
-    const handleSend = (text) => {
-        sendMessage(text);
-    };
-    
-
 
   // 사용자가 채팅 치면 작동하는 핸들러
   const enterUserText = (event) => {
@@ -75,19 +60,21 @@ const InGamePage = () => {
 
   // 2 단계 : 스톰프 연결하고 방리스트가져옴
   useEffect(() => {
-    if(stompClient){
-      stompClient.subscribe('/topic/list', (list)=>{ 
-        const receviedList = JSON.parse(list.body);
-        console.log(receviedList);
-        setUserList(receviedList);
-      });
-
+      if(stompClient && !isConnecte){
+        stompClient.subscribe('/topic/list', (list)=>{ 
+          setUserList(JSON.parse(list.body));
+          console.log(JSON.parse(list.body));
+        });
+        setIsConnecte(true);
+      }
       const message = {
         roomId : getCookieValue("roomId")
       }
-      stompClient.send("/app/giveMeList", {}, JSON.stringify(message))
-    }
+      if(stompClient){
+        stompClient.send("/app/giveMeList", {}, JSON.stringify(message))
+      }
   }, [stompClient]);
+  
 
 
 
@@ -97,7 +84,7 @@ const InGamePage = () => {
       true ? (
       <div className='wrapper'>
       {/* 왼쪽 화면 */}
-        {isUserList ?(
+        {userList ?(
           <div className='user-box-left-part'>
             <UserBox userName={userList[0] ? userList[0].playerId: "미정"} show={userList[0] ? true : false} className="first-user-box"/>
             <UserBox userName={userList[1] ? userList[1].playerId: "미정"} show={userList[1] ? true : false} className="second-user-box"/>
@@ -117,7 +104,7 @@ const InGamePage = () => {
       </div>
       {/* 오른쪽 화면 */}
       {
-        isUserList ? (
+        userList ? (
           <div className='user-box-right-part'>
             <UserBox userName={userList[4]? userList[4].playerId: "미정"} show={userList[4] ? true : false} className="five-user-box"/>
             <UserBox userName={userList[5]? userList[5].playerId: "미정"} show={userList[5] ? true : false} className="six-user-box"/>

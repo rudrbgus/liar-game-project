@@ -6,7 +6,6 @@ import cookie from 'react-cookies';
 
 const FindModal = ({click, change}) => {
     const [inputRoomCode, setInputRoomCode] = useState("");
-
     
     // 방 찾기 모달 끄는 핸들러
     const clickModalFrameHandler = (event) =>{        
@@ -32,21 +31,16 @@ const FindModal = ({click, change}) => {
         };
     const clickCheckButtonHandler = () =>{
         const roomCode = getCookieValue("room-code");
-            axios.post("http://localhost:8181/compare-room-code", { inputRoomCode,  roomCode})
+            axios.post("http://localhost:8181/find-room", {inputRoomCode})
             .then(res => {
-                console.log("입력받은 데이터: " + res.data);
-                return res.data; // 이 부분이 추가된 부분
+                console.log(res.data);
+                //console.log("입력받은 데이터: " + JSON.parse(res.data));
+                // cookie.save("userId", userData, { path: '/' });
+                //     console.log("쿠키에 저장된 값: " + userData);
+                click();
+                change(2);
+                
             })
-            .then((userData) => {
-                if(userData === "실패"){
-
-                }else{
-                    cookie.save("userId", userData, { path: '/' });
-                    console.log("쿠키에 저장된 값: " + userData);
-                    click();
-                    change(2);
-                }
-            });
     }
     
   return (
