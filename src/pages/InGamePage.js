@@ -13,9 +13,6 @@ import SockJS from 'sockjs-client';
 const InGamePage = () => {
   const [userText, setUserText] = useState(""); // 유저 채팅
   const [chatArray, setChatArray] = useState([]); // 유저 채팅 배열
-  const [isClick, setIsClick] = useState(false);
-  const [global, setGlobal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [roomCode, setRoomCode] = useState("1234");
   const [isGetRoomCode, setIsGetRoomCode] = useState(false);
   const [userList, setUserList] = useState([]); // 유저 리스트
@@ -28,11 +25,11 @@ const InGamePage = () => {
     const cookiePairs = document.cookie.split("; ");
     for (let i = 0; i < cookiePairs.length; i++) {
       const pair = cookiePairs[i].split("=");
-      if (pair[0] === key) {
-        return pair[1];
+        if (pair[0] === key) {
+          return pair[1];
+        }
       }
-    }
-    return null;
+      return null;
     };
 
     const [messages, setMessages] = useState([]);
@@ -63,40 +60,41 @@ const InGamePage = () => {
   };
 
   
-  // 이 페이지가 마운트 되면
+  // 1 단계 : 방코드 가져오고 방제목으로 하고 웹 소켓연결함.
   useEffect(()=>{
     setRoomCode(getCookieValue("roomId")); // 방 코드 가져와서 방제목으로 설정함
-    const socket = new SockJS("http://localhost:8181/ws");
-    const stomp = Stomp.over(socket);
-    stomp.connect({}, ()=>{setStompClient(stomp)});
+    const socket = new SockJS("http://localhost:8181/ws"); // 웹 소켓 연결
+    const stomp = Stomp.over(socket); // stomp 를 연결
+    stomp.connect({}, ()=>{setStompClient(stomp)}); // 스톰프 연결
     setIsGetRoomCode(true);      
-    
     return()=>{
       console.log("소켓 제거");
       socket.close();
     }
   }, []);
 
- 
-
-
-
-  // 방 코드 입력 받고 나서
+  // 2 단계 : 스톰프 연결하고 방리스트가져옴
   useEffect(() => {
     if(stompClient){
-      stompClient.subscribe('/topic/list', (list)=>{
+      stompClient.subscribe('/topic/list', (list)=>{ 
         const receviedList = JSON.parse(list.body);
         console.log(receviedList);
+        setUserList(receviedList);
       });
-      stompClient.send("/app/giveMeList", {})
+
+      const message = {
+        roomId : getCookieValue("roomId")
+      }
+      stompClient.send("/app/giveMeList", {}, JSON.stringify(message))
     }
   }, [stompClient]);
+
 
 
   return (
     <>
     {
-      !global ? (
+      true ? (
       <div className='wrapper'>
       {/* 왼쪽 화면 */}
         {isUserList ?(
@@ -132,7 +130,7 @@ const InGamePage = () => {
     </div>
     ):(
       <>
-        {global && <InGamePageFinal roomCode={roomCode}/>}
+        {/* {<InGamePageFinal roomCode={roomCode}/>} */}
       </>
     )}
     </>

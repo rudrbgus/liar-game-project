@@ -22,7 +22,7 @@ const Main = ({change}) => {
   }
   // 방 만들기 버튼 누르면 실행되는 함수
   const clickMakeRoomButtonHandler = () =>{
-    axios.post("http://localhost:8181/create-room")
+    axios.post("http://localhost:8181/room")
       .then((res)=>{
         console.log("방 코드: "+res.data);
         cookie.save("roomId",res.data);

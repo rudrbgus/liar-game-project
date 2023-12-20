@@ -5,6 +5,8 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 
 const FindModal = ({click, change}) => {
+    const [inputRoomCode, setInputRoomCode] = useState("");
+
     
     // 방 찾기 모달 끄는 핸들러
     const clickModalFrameHandler = (event) =>{        
@@ -12,7 +14,6 @@ const FindModal = ({click, change}) => {
             click();
         }        
     }
-    const [inputRoomCode, setInputRoomCode] = useState("");
     // input 값이 변경될 때마다 호출되는 함수
     const handleInputChange = (event) => {
     // 입력 값이 변경될 때마다 상태를 업데이트
@@ -30,11 +31,7 @@ const FindModal = ({click, change}) => {
             return null;
         };
     const clickCheckButtonHandler = () =>{
-        postUserInfo();
-        
-    }
-    const postUserInfo = () =>{
-            const roomCode = getCookieValue("room-code");
+        const roomCode = getCookieValue("room-code");
             axios.post("http://localhost:8181/compare-room-code", { inputRoomCode,  roomCode})
             .then(res => {
                 console.log("입력받은 데이터: " + res.data);
@@ -50,8 +47,8 @@ const FindModal = ({click, change}) => {
                     change(2);
                 }
             });
-            ;    
     }
+    
   return (
     <div className='find-modal-frame' onClick={clickModalFrameHandler}>
         <div className='__body'>
