@@ -43,7 +43,6 @@ const InGamePage = () => {
         userName: userId,
         userContext: userContext
       }
-      console.log(message);
       stompClient.send("/app/addChat", {}, JSON.stringify(message));
       // 입력 창 초기화
       setUserText("");
@@ -74,11 +73,11 @@ const InGamePage = () => {
       if(stompClient && !isConnecte){
         stompClient.subscribe('/topic/list', (list)=>{ 
           setUserList(JSON.parse(list.body));
-          console.log(JSON.parse(list.body));
+          //console.log(JSON.parse(list.body));
         });
         stompClient.subscribe('/topic/chat', (chat)=>{ 
           setChatArray(JSON.parse(chat.body));
-          console.log(JSON.parse(chat.body));
+          //console.log(JSON.parse(chat.body));
         });
         setIsConnecte(true);
       }
@@ -89,9 +88,13 @@ const InGamePage = () => {
         stompClient.send("/app/giveMeList", {}, JSON.stringify(message))
         stompClient.send("/app/giveMeChat", {}, JSON.stringify(message));
       }
+      setIsUserList(true);
   }, [stompClient]);
   
-
+  const [userNumber, setUserNumber] = useState(0);
+  useEffect(()=>{
+    setUserNumber(userList.length);
+  }, [userList])
 
 
   return (
@@ -117,7 +120,7 @@ const InGamePage = () => {
         {/* 방 코드 */}
           {isGetRoomCode ? (<RoomCodeButton roomCode={roomCode}/>):(<div>Loading</div>)}
         {/* 게임 상황 */}
-          {isUserList ? (<InGameState roomCode={roomCode}/>):(<div>Loading...</div>)}
+          {isUserList ? (<InGameState userListNumber={userList.length}/>):(<div>Loading...</div>)}
         {/* 채팅창 */}
         <div className='__chat-box'>
           <div className='__chatiing-box'>
