@@ -35,6 +35,7 @@ const FindModal = ({click, change}) => {
             .then(res => {
                 cookie.save("userName", res.data.userName)
                 cookie.save("roomId",res.data.roomId);
+                cookie.save("isSuperUser",res.data.superUser);
                 click();
                 change(2);    
             })

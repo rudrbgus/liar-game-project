@@ -25,8 +25,10 @@ const Main = ({change}) => {
   const clickMakeRoomButtonHandler = () =>{
     axios.get("http://localhost:8181/room")
       .then((res)=>{
+        console.log(res);
         cookie.save("userName", res.data.userName)
         cookie.save("roomId",res.data.roomId);
+        cookie.save("isSuperUser",res.data.superUser);
         change(2);
       });
   }
