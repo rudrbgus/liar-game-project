@@ -47,14 +47,15 @@ const InGamePage = () => {
   
   // 1 단계 : 방코드 가져오고 방제목으로 하고 웹 소켓연결함.
   useEffect(()=>{
-    setRoomCode(getCookieValue("roomId")); // 방 코드 가져와서 방제목으로 설정함
     const socket = new SockJS("http://localhost:8181/ws"); // 웹 소켓 연결
     const stomp = Stomp.over(socket); // stomp 를 연결
     stomp.connect({}, ()=>{setStompClient(stomp)}); // 스톰프 연결
+    setRoomCode(getCookieValue("roomId"));
     setIsGetRoomCode(true);      
     return()=>{
       console.log("소켓 제거");
       const message = {
+        userName: getCookieValue("userName"),
         roomId : getCookieValue("roomId")
       }
       stompClient.send("/app/outRoom", {}, JSON.stringify(message))
@@ -68,6 +69,10 @@ const InGamePage = () => {
         stompClient.subscribe('/topic/list', (list)=>{ 
           setUserList(JSON.parse(list.body));
           console.log(JSON.parse(list.body));
+        });
+        stompClient.subscribe('/topic/chat', (chat)=>{ 
+          setChatArray(JSON.parse(chat.body));
+          console.log(JSON.parse(chat.body));
         });
         setIsConnecte(true);
       }

@@ -31,12 +31,12 @@ const FindModal = ({click, change}) => {
         };
     const clickCheckButtonHandler = () =>{
         const roomCode = getCookieValue("room-code");
-            axios.post("http://localhost:8181/find-room", {inputRoomCode})
+            axios.post("http://localhost:8181/room", {inputRoomCode})
             .then(res => {
-                console.log(res.data);
+                cookie.save("userName", res.data.userName)
+                cookie.save("roomId",res.data.roomId);
                 click();
-                change(2);
-                
+                change(2);    
             })
     }
     
