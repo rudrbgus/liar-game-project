@@ -36,9 +36,15 @@ const InGamePage = () => {
   // 사용자가 채팅 치면 작동하는 핸들러
   const enterUserText = (event) => {
     if (event.key === 'Enter') {
-      const userId = getCookieValue("userId"); // userId 쿠키 값 가져오기
+      const userId = getCookieValue("userName"); // userId 쿠키 값 가져오기
       const userContext = event.target.value;
-      axios.post("http://localhost:8181/addChat", {userId, userContext});                                                                               
+      const message ={
+        roomId: getCookieValue("roomId"),
+        userName: userId,
+        userContext: userContext
+      }
+      console.log(message);
+      stompClient.send("/app/addChat", {}, JSON.stringify(message));
       // 입력 창 초기화
       setUserText("");
     }
@@ -81,6 +87,7 @@ const InGamePage = () => {
       }
       if(stompClient){
         stompClient.send("/app/giveMeList", {}, JSON.stringify(message))
+        stompClient.send("/app/giveMeChat", {}, JSON.stringify(message));
       }
   }, [stompClient]);
   
@@ -104,13 +111,33 @@ const InGamePage = () => {
             <div>Loading</div>
           )
         }
+
       {/* 중앙 화면 */}
       <div className='center-box'>
         {/* 방 코드 */}
           {isGetRoomCode ? (<RoomCodeButton roomCode={roomCode}/>):(<div>Loading</div>)}
         {/* 게임 상황 */}
           {isUserList ? (<InGameState roomCode={roomCode}/>):(<div>Loading...</div>)}
+        {/* 채팅창 */}
+        <div className='__chat-box'>
+          <div className='__chatiing-box'>
+              {/* 채팅 내용을 매핑하여 출력 */}
+              {chatArray.map((chat, index) => (
+                <div key={index} className='__chat-item'>
+                    <span className='__chat-user'>{chat.userName}:</span>
+                    <span className='__chat-text'>{chat.content}</span>
+                </div>
+              ))}
+            </div>
+            <input
+              className='__chat-input'
+              value={userText}
+              onChange={(event) => setUserText(event.target.value)}
+              onKeyDown={enterUserText}
+            />
+            </div>
       </div>
+
       {/* 오른쪽 화면 */}
       {
         userList ? (
