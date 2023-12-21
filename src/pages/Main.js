@@ -20,15 +20,17 @@ const Main = ({change}) => {
   const clickHowButtonHandler = () =>{
     setIsOpenHowButton(!isOpenHowButton);
   }
-  // 방 만들기 버튼 누르면 실행되는 함수
+
+  // 방 만드는 핸들러 함수 
   const clickMakeRoomButtonHandler = () =>{
-    axios.post("http://localhost:8181/room")
+    axios.get("http://localhost:8181/room")
       .then((res)=>{
-        console.log("방 코드: "+res.data);
-        cookie.save("roomId",res.data);
+        cookie.save("userName", res.data.userName)
+        cookie.save("roomId",res.data.roomId);
         change(2);
       });
   }
+
   // 방 찾기 버튼
   const clickFindRoomButtonHandler = () =>{
     setFind(!find);

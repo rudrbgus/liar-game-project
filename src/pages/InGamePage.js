@@ -54,6 +54,10 @@ const InGamePage = () => {
     setIsGetRoomCode(true);      
     return()=>{
       console.log("소켓 제거");
+      const message = {
+        roomId : getCookieValue("roomId")
+      }
+      stompClient.send("/app/outRoom", {}, JSON.stringify(message))
       socket.close();
     }
   }, []);

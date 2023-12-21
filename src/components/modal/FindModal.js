@@ -34,9 +34,6 @@ const FindModal = ({click, change}) => {
             axios.post("http://localhost:8181/find-room", {inputRoomCode})
             .then(res => {
                 console.log(res.data);
-                //console.log("입력받은 데이터: " + JSON.parse(res.data));
-                // cookie.save("userId", userData, { path: '/' });
-                //     console.log("쿠키에 저장된 값: " + userData);
                 click();
                 change(2);
                 
