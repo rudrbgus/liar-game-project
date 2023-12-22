@@ -70,10 +70,12 @@ const InGamePage = () => {
   // 2 단계 : 스톰프 연결하고 방리스트가져옴
   useEffect(() => {
       if(stompClient && !isConnecte){
+        // 플레이어 리스트 구독
         stompClient.subscribe('/topic/list', (list)=>{ 
           setUserList(JSON.parse(list.body));
           //console.log(JSON.parse(list.body));
         });
+        // 채팅 리스트 구독
         stompClient.subscribe('/topic/chat', (chat)=>{ 
           setChatArray(JSON.parse(chat.body));
           //console.log(JSON.parse(chat.body));
