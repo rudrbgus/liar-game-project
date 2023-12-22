@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import "./InGamePage.scss";
 import UserBox from '../components/box/UserBox';
 import RoomCodeButton from '../components/button/RoomCodeButton';
-import axios from 'axios';
-import cookie from 'react-cookies';
 import InGameState from '../components/box/InGameState';
 import InGamePageFinal from './InGamePageFinal';
 import { Stomp } from '@stomp/stompjs';
@@ -13,13 +11,14 @@ import SockJS from 'sockjs-client';
 const InGamePage = () => {
   const [userText, setUserText] = useState(""); // 유저 채팅
   const [chatArray, setChatArray] = useState([]); // 유저 채팅 배열
-  const [roomCode, setRoomCode] = useState("1234");
-  const [isGetRoomCode, setIsGetRoomCode] = useState(false);
+  const [roomCode, setRoomCode] = useState("1234"); // 방 코드
+  const [isGetRoomCode, setIsGetRoomCode] = useState(false); // 방 코드 설정 되면
   const [userList, setUserList] = useState([]); // 유저 리스트
-  const [isUserList, setIsUserList] = useState(false);
+  const [isUserList, setIsUserList] = useState(false); // 유저 리스트 설정 되면
   const [stompClient, setStompClient] = useState(null);
   const [isConnecte, setIsConnecte] = useState(false);
-  const [receviedList, setReceviedList] = useState([]);
+  const [started, setStarted] = useState(false);
+  
 
   // 쿠키에서 특정 키의 값을 가져오는 함수
   const getCookieValue = (key) => {
@@ -85,17 +84,18 @@ const InGamePage = () => {
         roomId : getCookieValue("roomId")
       }
       if(stompClient){
-        stompClient.send("/app/giveMeList", {}, JSON.stringify(message))
+        stompClient.send("/app/giveMeList", {}, JSON.stringify(message));
         stompClient.send("/app/giveMeChat", {}, JSON.stringify(message));
       }
       setIsUserList(true);
   }, [stompClient]);
   
-  const [userNumber, setUserNumber] = useState(0);
+ 
   useEffect(()=>{
-    setUserNumber(userList.length);
-  }, [userList])
-
+    if(started){
+      
+    }
+  }, [started])
 
   return (
     <>
@@ -120,7 +120,7 @@ const InGamePage = () => {
         {/* 방 코드 */}
           {isGetRoomCode ? (<RoomCodeButton roomCode={roomCode}/>):(<div>Loading</div>)}
         {/* 게임 상황 */}
-          {isUserList ? (<InGameState userListNumber={userList.length}/>):(<div>Loading...</div>)}
+          {isUserList ? (<InGameState userListNumber={userList.length} setStarted = {setStarted} stompClient={stompClient}/>):(<div>Loading...</div>)}
         {/* 채팅창 */}
         <div className='__chat-box'>
           <div className='__chatiing-box'>
