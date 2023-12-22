@@ -36,6 +36,7 @@ const InGameState = ({userListNumber, setStarted, stompClient}) => {
     useEffect(()=>{
       if(stompClient && !isSubscribe){
         stompClient.subscribe('/topic/game', (game)=>{ 
+          setGameState(game.body);
           setStarted(true);
         });
         console.log("게임챗 구독");

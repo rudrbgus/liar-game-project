@@ -21,7 +21,7 @@ const InGamePageFinal = ({roomCode}) => {
 
 
   return (
-    <></>
+    <>123</>
 
     // <div className='ingame-wrapper'>
     //     {/* 왼쪽 화면 */}

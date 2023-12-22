@@ -90,17 +90,16 @@ const InGamePage = () => {
       setIsUserList(true);
   }, [stompClient]);
   
- 
+  const [changeView, setChangeView] = useState(false);
   useEffect(()=>{
-    if(started){
-      
-    }
+    // 여기서 화면 바꾸고
+    setChangeView(true);
   }, [started])
 
   return (
     <>
     {
-      true ? (
+      changeView ? (
       <div className='wrapper'>
       {/* 왼쪽 화면 */}
         {userList ?(
@@ -156,7 +155,7 @@ const InGamePage = () => {
     </div>
     ):(
       <>
-        {/* {<InGamePageFinal roomCode={roomCode}/>} */}
+        {<InGamePageFinal roomCode={roomCode}/>}
       </>
     )}
     </>
